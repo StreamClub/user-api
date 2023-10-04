@@ -1,0 +1,8 @@
+version: '3'
+services:
+  uapi:
+      container_name: uapi
+      build: .
+      restart: unless-stopped
+      ports:
+        - 8080:8080

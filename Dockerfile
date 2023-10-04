@@ -17,4 +17,4 @@ COPY . .
 
 EXPOSE 8080
 
-CMD [ "node", "app.ts" ]
+CMD [ "npm", "start" ]

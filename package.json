@@ -4,6 +4,7 @@
   "description": "Stream Club Process API",
   "main": "app.ts",
   "scripts": {
+    "start": "node src/app.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
