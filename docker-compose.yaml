@@ -1,9 +1,20 @@
 version: '3'
 services:
-  uapi:
-      container_name: uapi
+  user_db_service:
+      image: postgres:14
+      restart: always
+      environment:
+        POSTGRES_DB: ${DB_NAME}
+        POSTGRES_USER: ${DB_USER}
+        POSTGRES_PASSWORD: ${DB_PASSWORD}
+      ports:
+        - ${DB_PORT}:5432
+      volumes:
+        - ${DB_VOLUME}:/var/lib/postgresql/data
+  uapi_service:
+      depends_on:
+        - user_db_service
       build: .
-      # restart: always
       ports:
         - 8080:8080
   

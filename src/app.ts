@@ -5,8 +5,9 @@ const pg = require('pg')
 dotenv.config()
 
 const pool = new pg.Pool({
-    connectionString: process.env.USER_DB_URL,
-    ssl: true // VERIFICAR: revisar con este comando funciona en localhost, pero en la rama deployada de render puede que no
+    connectionString: process.env.DB_URL,
+    // ssl: true 
+    // VERIFICAR: revisar con este comando funciona en localhost, pero en la rama deployada de render puede que no
 })
 const app = express()
 const port = 8080
@@ -18,7 +19,7 @@ app.get('/', async (req, res) => {
 })
 
 app.get('/users', async (req, res) => {
-    const result = await pool.query('select * from usuarios')
+    const result = await pool.query('select * from pruebilla')
     const users = result.rows
     res.send(users)
 })
