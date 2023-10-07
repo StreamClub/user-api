@@ -3,6 +3,7 @@ services:
   uapi:
       container_name: uapi
       build: .
-      restart: unless-stopped
+      # restart: always
       ports:
         - 8080:8080
+  
