@@ -2,6 +2,7 @@ version: '3'
 services:
   user_db_service:
       image: postgres:14
+      container_name: user_db_container
       restart: always
       environment:
         POSTGRES_DB: ${DB_NAME}
@@ -11,10 +12,17 @@ services:
         - ${DB_PORT}:5432
       volumes:
         - ${DB_VOLUME}:/var/lib/postgresql/data
+      healthcheck:
+        test: ["CMD", "pg_isready", "-U", "${DB_USER}", "-d", "${DB_NAME}", "-h", "user_db_service"]
+        interval: 10s
+        timeout: 5s
+        retries: 3
   uapi_service:
       depends_on:
-        - user_db_service
+        user_db_service: 
+          condition: service_healthy
+      container_name: uapi_container
       build: .
       ports:
         - 8080:8080
-  
+      
