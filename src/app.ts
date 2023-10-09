@@ -1,63 +1,28 @@
-const express = require('express')
-const dotenv = require('dotenv')
-const pg = require('pg')
+import * as dotenv from "dotenv";
+import express from "express";
+import cors from "cors";
+import { pinoHttp } from 'pino-http';
+import pinoLogger from "pino";
+import { config } from "@config";
+import { exceptionToHttpError } from '@middlewares';
+import { registerRouters } from "@routes";
 
-dotenv.config()
+dotenv.config();
 
+async function main() {
 
-const { Sequelize, Model, DataTypes } = require("sequelize");
+    const app = express();
 
-// si se ejecuta localmente con "npm start" se usa esta linea
-// const sequelize = new Sequelize('postgres://StreamClub:DatosauriosFiuba@localhost/user_db')
+    app.use(pinoHttp());
+    app.use(cors());
+    app.use(express.json());
+    registerRouters(app);
+    app.use(exceptionToHttpError);
 
-// si se ejecuta con "docker-compose up" se usa esta linea
-const sequelize = new Sequelize('postgres://StreamClub:DatosauriosFiuba@user_db_service/user_db')
-// const sequelize = new Sequelize(process.env.DATABASE_URL);
-
-const User = sequelize.define('User', {
-    username: {
-        type: DataTypes.STRING,
-    },
-    displayname: {
-        type: DataTypes.STRING
-    },
-    email: {
-        type: DataTypes.STRING,
-        unique: true
-    },
-    password: {
-        type: DataTypes.STRING
-    }
-});
-
-const app = express()
-const port = 8080
-
-app.get('/', async (req, res) => {
-    res.status(200).json({ status: 'UAPI listening in port 8080' });
-})
-
-app.get('/users', async (req, res) => {
-    const users = await User.findAll();
-    res.send(users)
-})
-
-app.get('/drop_users', async (req, res) => {
-    await User.drop();
-    await User.sync({ force: true });
-    res.send('Tabla de usuarios dropeada!')
-})
-
-app.get('/create_user', async (req, res) => {
-    const _ = await User.create({
-        username: 'user1',
-        displayName: 'displayName1',
-        email: 'example@example.com',
-        password: 'password1'
+    app.listen(config.port, () => {
+        const logger = pinoLogger();
+        logger.info(`Process API listening on port ${config.port}`);
     });
-    res.send('user1 creado!')
-})
+}
 
-app.listen(port, () => {
-    console.log(`Example app listening on port ${port}`)
-})
+main();

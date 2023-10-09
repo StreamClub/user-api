@@ -1,0 +1,36 @@
+{
+  "compilerOptions": {
+    "module": "CommonJS",
+    "target": "ES2015",
+    "rootDir": "src",
+    "outDir": "target",
+    "esModuleInterop": true,
+    "noImplicitAny": true,
+    "removeComments": true,
+    "preserveConstEnums": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "sourceMap": true,
+    "baseUrl": "./src",
+    "paths": {
+      "@services": ["services"],
+      "@services/*": ["services/*"],
+      "@controllers": ["controllers"],
+      "@controllers/*": ["controllers/*"],
+      "@config": ["config"],
+      "@config/*": ["config/*"],
+      "@middlewares": ["middlewares"],
+      "@middlewares/*": ["middlewares/*"],
+      "@routes": ["routes"],
+      "@routes/*": ["routes/*"],
+      "@models": ["models"],
+      "@models/*": ["models/*"],
+      "@dtos": ["dtos"],
+      "@dtos/*": ["dtos/*"],
+      "@exceptions": ["exceptions"],
+      "@exceptions/*": ["exceptions/*"],
+    }
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules"]
+}

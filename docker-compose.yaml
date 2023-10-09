@@ -19,10 +19,11 @@ services:
         retries: 3
   uapi_service:
       depends_on:
-        user_db_service: 
+        user_db_service:
           condition: service_healthy
       container_name: uapi_container
       build: .
+      volumes:
+        -   ${VOLUME_DIR}:/app
       ports:
         - 8080:8080
-      
