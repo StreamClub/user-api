@@ -23,6 +23,18 @@ class UserService {
         );
         return authService.generateTokens(userDto.email);
     }
+
+    public async login(
+        userDto: LoginDto,
+    ): Promise<Credentials> {
+        const user = await userRepository.findOneByEmail(userDto.email);
+        const isValidLogin =
+            user && authService.isValidPassword(userDto.password, user.password);
+        if (!isValidLogin) {
+            throw new NotFoundException('Invalid credentials');
+        }
+        return authService.generateTokens(userDto.email);
+    }
 }
 
 export const userService = new UserService();

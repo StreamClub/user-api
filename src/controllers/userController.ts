@@ -1,13 +1,10 @@
 // import { RequestDtos, ResponseDtos } from '@dtos';
-import axios from 'axios';
 import { Request } from '@models';
-import { config } from '@config';
 import { RegisterUserDto, LoginDto } from '@dtos';
 import { userService } from '@services';
 import { Credentials } from '@dtos';
 
 class UserController {
-
 
   public async register(
     req: Request<RegisterUserDto>,
@@ -17,8 +14,8 @@ class UserController {
 
   public async login(
     req: Request<LoginDto>,
-  ): Promise<any> {
-    return;
+  ): Promise<Credentials> {
+    return await userService.login(req.body);
   }
 }
 

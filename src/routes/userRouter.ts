@@ -6,7 +6,7 @@ import {
 import { Request } from "@models";
 import { Router } from "express";
 import { StatusCodes } from "http-status-codes";
-import { RegisterUserSchema } from "@dtos";
+import { LoginSchema, RegisterUserSchema } from "@dtos";
 import { userController } from "@controllers";
 import { config } from "@config";
 
@@ -24,7 +24,7 @@ export function UserRouter() {
 
     router.post(
         "/login",
-        validateSchema(RegisterUserSchema, [FieldOptions.body]),
+        validateSchema(LoginSchema, [FieldOptions.body]),
         handleRequest(
             (req) => userController.login(req),
             StatusCodes.OK
