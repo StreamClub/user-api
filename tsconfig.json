@@ -29,6 +29,10 @@
       "@dtos/*": ["dtos/*"],
       "@exceptions": ["exceptions"],
       "@exceptions/*": ["exceptions/*"],
+      "@entities": ["entities"],
+      "@entities/*": ["entities/*"],
+      "@dal": ["dal"],
+      "@dal/*": ["dal/*"],
     }
   },
   "include": ["src/**/*"],

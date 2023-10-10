@@ -26,4 +26,11 @@ services:
       volumes:
         -   ${VOLUME_DIR}:/app
       ports:
-        - 8080:8080
+        - ${EXTERNAL_PORT}:${PORT}
+  pgadmin:
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: hlarrea@fi.uba.ar
+      PGADMIN_DEFAULT_PASSWORD: 123456
+    ports:
+      - "5050:80"

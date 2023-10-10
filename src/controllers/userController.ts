@@ -2,15 +2,16 @@
 import axios from 'axios';
 import { Request } from '@models';
 import { config } from '@config';
-import { CreateUserDto, LoginDto } from '@dtos';
+import { RegisterUserDto, LoginDto } from '@dtos';
+import { userService } from '@services';
 
 class UserController {
 
 
   public async register(
-    req: Request<CreateUserDto>,
+    req: Request<RegisterUserDto>,
   ): Promise<any> {
-    return;
+    return await userService.register(req.body);
   }
 
   public async login(

@@ -6,6 +6,7 @@ import pinoLogger from "pino";
 import { config } from "@config";
 import { exceptionToHttpError } from '@middlewares';
 import { registerRouters } from "@routes";
+import { Db } from "@dal";
 
 dotenv.config();
 
@@ -18,6 +19,8 @@ async function main() {
     app.use(express.json());
     registerRouters(app);
     app.use(exceptionToHttpError);
+    const db = new Db();
+    db.init();
 
     app.listen(config.port, () => {
         const logger = pinoLogger();
