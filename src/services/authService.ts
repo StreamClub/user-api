@@ -1,4 +1,5 @@
 import { config } from '@config';
+import { Credentials } from '@dtos';
 import { UnauthorizedException } from '@exceptions';
 import { tokenRepository } from 'dal';
 import { Token } from 'entities';
@@ -35,10 +36,7 @@ class AuthService {
         );
     }
 
-    public async generateTokens(email: string): Promise<{
-        token: string;
-        refreshToken: string;
-    }> {
+    public async generateTokens(email: string): Promise<Credentials> {
         const token = jwt.sign({ email, uuid: v1() }, config.tokenKey, {
             expiresIn: `${config.tokenLifeMinutes * 60}s`,
         });

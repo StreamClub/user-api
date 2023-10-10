@@ -4,13 +4,14 @@ import { Request } from '@models';
 import { config } from '@config';
 import { RegisterUserDto, LoginDto } from '@dtos';
 import { userService } from '@services';
+import { Credentials } from '@dtos';
 
 class UserController {
 
 
   public async register(
     req: Request<RegisterUserDto>,
-  ): Promise<any> {
+  ): Promise<Credentials> {
     return await userService.register(req.body);
   }
 

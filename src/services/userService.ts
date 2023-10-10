@@ -1,4 +1,4 @@
-import { LoginDto, RegisterUserDto } from "@dtos";
+import { Credentials, LoginDto, RegisterUserDto } from "@dtos";
 import { DomainException, NotFoundException } from "@exceptions";
 import { authService } from "./authService";
 import { User } from "@entities";
@@ -8,7 +8,7 @@ import { userRepository } from "@dal";
 class UserService {
     public async register(
         userDto: RegisterUserDto,
-    ): Promise<{ token: string; refreshToken: string }> {
+    ): Promise<Credentials> {
         const userAlreadyExists =
             (await userRepository.findOneByEmail(userDto.email)) !== null;
         if (userAlreadyExists) {
