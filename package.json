@@ -30,6 +30,7 @@
     "prettier": "^3.0.3",
     "sequelize": "^6.33.0",
     "sqlite3": "^5.1.6",
+    "typescript": "^5.2.2",
     "uuid": "^9.0.1"
   },
   "devDependencies": {
