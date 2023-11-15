@@ -23,7 +23,7 @@ export function initUserModel(dbConnection: Sequelize) {
     displayName: {
       type: DataTypes.STRING,
       allowNull: true,
-      unique: true,
+      unique: false,
     },
     password: {
       type: DataTypes.STRING,
