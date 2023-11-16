@@ -10,7 +10,8 @@ export function initTokenModel(dbConnection: Sequelize) {
     TokenModel.init({
         email: {
             type: DataTypes.STRING,
-            unique: true
+            unique: true,
+            primaryKey: true,
         },
         refreshToken: {
             type: DataTypes.STRING

@@ -1,8 +1,8 @@
-// import { RequestDtos, ResponseDtos } from '@dtos';
 import { Request } from '@models';
-import { RegisterUserDto, LoginDto } from '@dtos';
+import { RegisterUserDto, LoginDto, RefreshCredentialsDto } from '@dtos';
 import { userService } from '@services';
 import { Credentials } from '@dtos';
+import { authService } from '@services/authService';
 
 class UserController {
 
@@ -17,6 +17,11 @@ class UserController {
   ): Promise<Credentials> {
     return await userService.login(req.body);
   }
+
+  public async refreshCredentials(req: Request<RefreshCredentialsDto>): Promise<Credentials> {
+    return await authService.generateJWT(req.body.refreshToken);
+  }
+
 }
 
 const userController = new UserController();

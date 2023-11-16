@@ -10,7 +10,7 @@ import { v1 } from 'uuid';
 
 class AuthService {
 
-    public async generateJWT(receivedRefreshToken: string): Promise<string> {
+    public async generateJWT(receivedRefreshToken: string): Promise<Credentials> {
         const refreshTokenData = jwt.verify(
             receivedRefreshToken,
             config.refreshTokenKey,
@@ -27,13 +27,7 @@ class AuthService {
         if (storedRefreshToken.refreshToken !== receivedRefreshToken) {
             throw new UnauthorizedException('Refresh token not related to user');
         }
-        return jwt.sign(
-            { email: refreshTokenData.email, uuid: v1() },
-            config.tokenKey,
-            {
-                expiresIn: `${config.tokenLifeMinutes * 60}s`,
-            },
-        );
+        return this.generateTokens(refreshTokenData.email);
     }
 
     public async generateTokens(email: string): Promise<Credentials> {
