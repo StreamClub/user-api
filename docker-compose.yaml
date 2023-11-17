@@ -26,4 +26,11 @@ services:
       volumes:
         -   ${VOLUME_DIR}:/app
       ports:
-        - 8080:8080
+        - ${EXTERNAL_PORT}:${PORT}
+  pgadmin:
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
+    ports:
+      - ${PGADMIN_EXTERNAL_PORT}:80

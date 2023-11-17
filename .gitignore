@@ -42,3 +42,4 @@ yarn.lock
 
 # Ignore docker volumes
 data
+dbVolume
