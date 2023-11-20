@@ -8,6 +8,8 @@ type Config = {
     tokenLifeMinutes: number;
     refreshTokenLifeMinutes: number;
     dbUrl: string;
+    senderEmail: string;
+    senderPassword: string;
 };
 
 dotenv.config();
@@ -20,6 +22,8 @@ export const config: Config = {
     tokenLifeMinutes: Number(getConfigValue('TOKEN_LIFE_MINUTES')),
     refreshTokenLifeMinutes: Number(getConfigValue('REFRESH_TOKEN_LIFE_MINUTES')),
     dbUrl: getConfigValue('DB_URL'),
+    senderEmail: getConfigValue('SENDER_EMAIL'),
+    senderPassword: getConfigValue('SENDER_PASSWORD'),
 };
 
 function getConfigValue(key: string): string {

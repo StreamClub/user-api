@@ -1,14 +1,16 @@
-import { Credentials, LoginDto, RegisterUserDto } from "@dtos";
+import { Credentials, LoginDto, RegisterUserDto, sendVerificationCodeDto } from "@dtos";
 import { DomainException, NotFoundException } from "@exceptions";
 import { authService } from "./authService";
-import { User } from "@entities";
-import { userRepository } from "@dal";
-
+import { User, VerificationCode } from "@entities";
+import { userRepository, verificationCodeRepository } from "@dal";
+import nodemailer from 'nodemailer';
+import { generate6digitNumber, sendMail } from "utils";
 
 class UserService {
     public async register(
         userDto: RegisterUserDto,
     ): Promise<Credentials> {
+        //TODO: Crear un user name en base al mail del usuario. Agarrar el correo y pasarlo
         const userAlreadyExists =
             (await userRepository.findOneByEmail(userDto.email)) !== null;
         if (userAlreadyExists) {
@@ -34,6 +36,14 @@ class UserService {
             throw new NotFoundException('Invalid credentials');
         }
         return authService.generateTokens(userDto.email);
+    }
+
+    public async sendVerificationCode(dto: sendVerificationCodeDto): Promise<any> {
+        const verificationCode = generate6digitNumber();
+        const verificationCodeEntity = new VerificationCode({ email: dto.email, verificationCode });
+        await verificationCodeRepository.save(verificationCodeEntity);
+        sendMail(dto.email, verificationCode);
+        return "Email sent";
     }
 }
 

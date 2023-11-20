@@ -1,4 +1,3 @@
-import cloneDeep from 'clone-deep';
 import { TokenModel } from './tokenModel';
 import { Token } from 'entities';
 
