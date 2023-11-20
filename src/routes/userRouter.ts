@@ -34,7 +34,7 @@ export function UserRouter() {
         validateSchema(RefreshCredentialsSchema, [FieldOptions.body]),
         handleRequest(
             (req) => userController.refreshCredentials(req),
-            StatusCodes.OK
+            StatusCodes.CREATED
         )
     );
 
@@ -43,7 +43,7 @@ export function UserRouter() {
         validateSchema(sendVerificationCodeSchema, [FieldOptions.body]),
         handleRequest(
             (req) => userController.sendVerificationCode(req),
-            StatusCodes.OK
+            StatusCodes.CREATED
         )
     );
 
