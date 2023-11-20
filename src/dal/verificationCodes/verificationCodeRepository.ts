@@ -4,12 +4,9 @@ import { VerificationCode } from 'entities';
 
 class VerificationCodeRepository {
     public async save(verificationCode: VerificationCode) {
-        console.log('intentando guardar')
-        console.log(verificationCode)
         await VerificationCodeModel.upsert(
             { ...verificationCode }
         );
-        console.log('guardado')
     }
 
     public async findOneByEmail(email: string): Promise<VerificationCode | null> {
