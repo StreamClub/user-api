@@ -14,7 +14,7 @@ export function initVerificationCodeModel(dbConnection: Sequelize) {
             primaryKey: true,
         },
         verificationCode: {
-            type: DataTypes.NUMBER
+            type: DataTypes.INTEGER
         }
     }, {
         sequelize: dbConnection,
