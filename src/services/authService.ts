@@ -5,6 +5,7 @@ import { tokenRepository, verificationCodeRepository } from 'dal';
 import { Token } from 'entities';
 import jwt from 'jsonwebtoken';
 import passwordHash from 'password-hash';
+import { isCodeValid } from 'utils';
 import { v1 } from 'uuid';
 
 
@@ -67,7 +68,7 @@ class AuthService {
 
     public async validateCode(email: string, code: number): Promise<void> {
         const verificationCode = await verificationCodeRepository.findOneByEmail(email);
-        if (!verificationCode || verificationCode.verificationCode !== code) {
+        if (!verificationCode || verificationCode.verificationCode !== code || !isCodeValid(verificationCode.updatedAt)) {
             throw new InvalidCodeException();
         }
         return;
