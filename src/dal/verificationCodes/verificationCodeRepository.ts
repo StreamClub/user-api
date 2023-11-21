@@ -1,5 +1,7 @@
+import { Moment } from 'moment';
 import { VerificationCodeModel } from './verificationCodeModel';
 import { VerificationCode } from 'entities';
+import { Op } from 'sequelize';
 
 
 class VerificationCodeRepository {
@@ -15,6 +17,10 @@ class VerificationCodeRepository {
         return new VerificationCode({
             ...verificationCode.toJSON(),
         });
+    }
+
+    public async deleteExpiredVerificationCodes(expiration: Moment): Promise<void> {
+        await VerificationCodeModel.destroy({ where: { updatedAt: { [Op.lte]: expiration } } });
     }
 }
 

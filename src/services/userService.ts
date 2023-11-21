@@ -3,7 +3,6 @@ import { DomainException, NotFoundException } from "@exceptions";
 import { authService } from "./authService";
 import { User, VerificationCode } from "@entities";
 import { userRepository, verificationCodeRepository } from "@dal";
-import nodemailer from 'nodemailer';
 import { generate6digitNumber, sendMail } from "utils";
 
 class UserService {
@@ -46,5 +45,4 @@ class UserService {
         return "Email sent";
     }
 }
-
 export const userService = new UserService();

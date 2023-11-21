@@ -7,6 +7,7 @@ import { config } from "@config";
 import { exceptionToHttpError } from '@middlewares';
 import { registerRouters } from "@routes";
 import { Db } from "@dal";
+import { cronjobService } from "@services";
 
 dotenv.config();
 
@@ -21,6 +22,7 @@ async function main() {
     app.use(exceptionToHttpError);
     const db = new Db();
     db.init();
+    cronjobService.start();
 
     app.listen(config.port, () => {
         const logger = pinoLogger();
