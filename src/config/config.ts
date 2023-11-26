@@ -11,6 +11,7 @@ type Config = {
     senderEmail: string;
     senderPassword: string;
     verificationCodeLifeMinutes?: number;
+    validationCodeCronExpression?: string;
 };
 
 dotenv.config();
@@ -26,6 +27,7 @@ export const config: Config = {
     senderEmail: getConfigValue('SENDER_EMAIL'),
     senderPassword: getConfigValue('SENDER_PASSWORD'),
     verificationCodeLifeMinutes: Number(getConfigValue('VALIDATION_CODE_LIFE_MINUTES')) || 1,
+    validationCodeCronExpression: getConfigValue('VALIDATION_CODE_CRON_EXPRESSION') || '*/5 * * * *',
 };
 
 function getConfigValue(key: string): string {

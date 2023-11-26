@@ -1,6 +1,7 @@
 import schedule from "node-schedule";
 import pinoLogger from "pino";
 import { authService } from "@services";
+import { config } from "@config";
 
 class CronjobService {
     private logger: any;
@@ -10,7 +11,7 @@ class CronjobService {
     }
 
     public async deleteExpiredVerificationCodes() {
-        schedule.scheduleJob("*/5 * * * *", async () => {
+        schedule.scheduleJob(config.validationCodeCronExpression, async () => {
             try {
                 authService.deleteExpiredVerificationCodes();
             } catch (error: any) {
