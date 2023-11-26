@@ -1,10 +1,11 @@
 import { config } from '@config';
 import { Credentials } from '@dtos';
-import { UnauthorizedException } from '@exceptions';
-import { tokenRepository } from 'dal';
+import { InvalidCodeException, UnauthorizedException } from '@exceptions';
+import { tokenRepository, verificationCodeRepository } from 'dal';
 import { Token } from 'entities';
 import jwt from 'jsonwebtoken';
 import passwordHash from 'password-hash';
+import { isCodeValid } from 'utils';
 import { v1 } from 'uuid';
 
 
@@ -63,6 +64,18 @@ class AuthService {
 
     public isValidPassword(password: string, hashedPassword: string): boolean {
         return passwordHash.verify(password, hashedPassword);
+    }
+
+    public async validateCode(email: string, code: number): Promise<void> {
+        const verificationCode = await verificationCodeRepository.findOneByEmail(email);
+        if (!verificationCode || verificationCode.verificationCode !== code || !isCodeValid(verificationCode.updatedAt)) {
+            throw new InvalidCodeException();
+        }
+        return;
+    }
+
+    public async deleteExpiredVerificationCodes(): Promise<void> {
+        return verificationCodeRepository.deleteExpiredVerificationCodes();
     }
 }
 
