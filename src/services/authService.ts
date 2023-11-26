@@ -1,16 +1,17 @@
 import { config } from '@config';
 import { Credentials } from '@dtos';
-import { UnauthorizedException } from '@exceptions';
-import { tokenRepository } from 'dal';
+import { InvalidCodeException, UnauthorizedException } from '@exceptions';
+import { tokenRepository, verificationCodeRepository } from 'dal';
 import { Token } from 'entities';
 import jwt from 'jsonwebtoken';
 import passwordHash from 'password-hash';
+import { isCodeValid } from 'utils';
 import { v1 } from 'uuid';
 
 
 class AuthService {
 
-    public async generateJWT(receivedRefreshToken: string): Promise<string> {
+    public async generateJWT(receivedRefreshToken: string): Promise<Credentials> {
         const refreshTokenData = jwt.verify(
             receivedRefreshToken,
             config.refreshTokenKey,
@@ -27,13 +28,7 @@ class AuthService {
         if (storedRefreshToken.refreshToken !== receivedRefreshToken) {
             throw new UnauthorizedException('Refresh token not related to user');
         }
-        return jwt.sign(
-            { email: refreshTokenData.email, uuid: v1() },
-            config.tokenKey,
-            {
-                expiresIn: `${config.tokenLifeMinutes * 60}s`,
-            },
-        );
+        return this.generateTokens(refreshTokenData.email);
     }
 
     public async generateTokens(email: string): Promise<Credentials> {
@@ -69,6 +64,18 @@ class AuthService {
 
     public isValidPassword(password: string, hashedPassword: string): boolean {
         return passwordHash.verify(password, hashedPassword);
+    }
+
+    public async validateCode(email: string, code: number): Promise<void> {
+        const verificationCode = await verificationCodeRepository.findOneByEmail(email);
+        if (!verificationCode || verificationCode.verificationCode !== code || !isCodeValid(verificationCode.updatedAt)) {
+            throw new InvalidCodeException();
+        }
+        return;
+    }
+
+    public async deleteExpiredVerificationCodes(): Promise<void> {
+        return verificationCodeRepository.deleteExpiredVerificationCodes();
     }
 }
 

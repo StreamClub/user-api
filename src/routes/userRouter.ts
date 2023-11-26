@@ -5,7 +5,7 @@ import {
 } from "@middlewares";
 import { Router } from "express";
 import { StatusCodes } from "http-status-codes";
-import { LoginSchema, RegisterUserSchema } from "@dtos";
+import { LoginSchema, RefreshCredentialsSchema, RegisterUserSchema, sendVerificationCodeSchema } from "@dtos";
 import { userController } from "@controllers";
 
 export function UserRouter() {
@@ -26,6 +26,24 @@ export function UserRouter() {
         handleRequest(
             (req) => userController.login(req),
             StatusCodes.OK
+        )
+    );
+
+    router.post(
+        "/refreshCredentials",
+        validateSchema(RefreshCredentialsSchema, [FieldOptions.body]),
+        handleRequest(
+            (req) => userController.refreshCredentials(req),
+            StatusCodes.CREATED
+        )
+    );
+
+    router.post(
+        "/sendVerificationCode",
+        validateSchema(sendVerificationCodeSchema, [FieldOptions.body]),
+        handleRequest(
+            (req) => userController.sendVerificationCode(req),
+            StatusCodes.CREATED
         )
     );
 

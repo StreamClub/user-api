@@ -1,15 +1,11 @@
-import cloneDeep from 'clone-deep';
 import { TokenModel } from './tokenModel';
 import { Token } from 'entities';
 
 
 class TokenRepository {
     public async save(token: Token) {
-        await TokenModel.update(
-            {
-                ...cloneDeep(token),
-            },
-            { where: { email: token.email } },
+        await TokenModel.upsert(
+            { ...token }
         );
     }
 

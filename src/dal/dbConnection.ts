@@ -2,6 +2,7 @@ import { config } from "@config";
 import { Sequelize } from "sequelize";
 import { initTokenModel } from "./tokens";
 import { initUserModel } from "./users";
+import { initVerificationCodeModel } from "./verificationCodes";
 
 class Db {
     private dbConnection = new Sequelize(config.dbUrl);
@@ -17,6 +18,7 @@ class Db {
             });
         initTokenModel(this.dbConnection);
         initUserModel(this.dbConnection);
+        initVerificationCodeModel(this.dbConnection);
     }
 
 }
