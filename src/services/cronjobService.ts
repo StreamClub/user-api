@@ -1,4 +1,3 @@
-import moment from "moment";
 import schedule from "node-schedule";
 import pinoLogger from "pino";
 import { authService } from "@services";
@@ -13,9 +12,7 @@ class CronjobService {
     public async deleteExpiredVerificationCodes() {
         schedule.scheduleJob("*/5 * * * *", async () => {
             try {
-                console.log("Updating published events");
-                const expiration = moment().add(1, "minute");
-                authService.deleteExpiredVerificationCodes(expiration);
+                authService.deleteExpiredVerificationCodes();
             } catch (error: any) {
                 this.logger.error(error.message);
             }

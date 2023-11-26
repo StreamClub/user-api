@@ -1,4 +1,5 @@
 import { config } from '@config';
+import { UnableToSendEmailException } from '@exceptions';
 import nodemailer from 'nodemailer';
 
 const transporter = nodemailer.createTransport({
@@ -13,14 +14,12 @@ export function sendMail(email: string, verificationCode: number) {
     const mailOptions = {
         from: config.senderEmail,
         to: email,
-        subject: 'NO REPLY: Codigo de Verificacion Stream Club',
-        text: `Tu codigo de verificacion es: ${verificationCode}`
+        subject: 'NO REPLY: Código de Verificación Stream Club',
+        text: `Tu código de verificación es: ${verificationCode}`
     };
     transporter.sendMail(mailOptions, function (error, info) {
         if (error) {
-            console.log(error);
-        } else {
-            console.log('Email sent: ' + info.response);
+            throw new UnableToSendEmailException(error.message);
         }
     });
 }

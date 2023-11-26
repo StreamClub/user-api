@@ -37,12 +37,12 @@ class UserService {
         return authService.generateTokens(userDto.email);
     }
 
-    public async sendVerificationCode(dto: sendVerificationCodeDto): Promise<any> {
+    public async sendVerificationCode(dto: sendVerificationCodeDto): Promise<void> {
         const verificationCode = generate6digitNumber();
         const verificationCodeEntity = new VerificationCode({ email: dto.email, verificationCode });
-        await verificationCodeRepository.save(verificationCodeEntity);
         sendMail(dto.email, verificationCode);
-        return "Email sent";
+        await verificationCodeRepository.save(verificationCodeEntity);
+        return;
     }
 }
 export const userService = new UserService();

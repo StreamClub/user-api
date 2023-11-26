@@ -4,7 +4,6 @@ import { InvalidCodeException, UnauthorizedException } from '@exceptions';
 import { tokenRepository, verificationCodeRepository } from 'dal';
 import { Token } from 'entities';
 import jwt from 'jsonwebtoken';
-import { Moment } from 'moment';
 import passwordHash from 'password-hash';
 import { isCodeValid } from 'utils';
 import { v1 } from 'uuid';
@@ -75,8 +74,8 @@ class AuthService {
         return;
     }
 
-    public async deleteExpiredVerificationCodes(expiration: Moment): Promise<void> {
-        return verificationCodeRepository.deleteExpiredVerificationCodes(expiration);
+    public async deleteExpiredVerificationCodes(): Promise<void> {
+        return verificationCodeRepository.deleteExpiredVerificationCodes();
     }
 }
 
