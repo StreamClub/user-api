@@ -25,7 +25,7 @@ class VerificationCodeRepository {
             where: {
                 updatedAt: {
                     [Op.lte]:
-                        moment().add(config.validationCodeLifeMinutes, VALIDATION_CODE_LIFE_UNIT)
+                        moment().add(config.verificationCodeLifeMinutes, VALIDATION_CODE_LIFE_UNIT)
                 }
             }
         });

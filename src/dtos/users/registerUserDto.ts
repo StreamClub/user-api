@@ -3,7 +3,7 @@ import Joi from "joi";
 export class RegisterUserDto {
     email: string;
     password: string;
-    validationCode: number;
+    verificationCode: number;
 }
 
 export const RegisterUserSchema = Joi.object({

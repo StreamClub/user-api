@@ -9,7 +9,7 @@ class UserController {
   public async register(
     req: Request<RegisterUserDto>,
   ): Promise<Credentials> {
-    await authService.validateCode(req.body.email, req.body.validationCode);
+    await authService.validateCode(req.body.email, req.body.verificationCode);
     return await userService.register(req.body);
   }
 

@@ -10,7 +10,7 @@ type Config = {
     dbUrl: string;
     senderEmail: string;
     senderPassword: string;
-    validationCodeLifeMinutes?: number;
+    verificationCodeLifeMinutes?: number;
 };
 
 dotenv.config();
@@ -25,7 +25,7 @@ export const config: Config = {
     dbUrl: getConfigValue('DB_URL'),
     senderEmail: getConfigValue('SENDER_EMAIL'),
     senderPassword: getConfigValue('SENDER_PASSWORD'),
-    validationCodeLifeMinutes: Number(getConfigValue('VALIDATION_CODE_LIFE_MINUTES')) || 1,
+    verificationCodeLifeMinutes: Number(getConfigValue('VALIDATION_CODE_LIFE_MINUTES')) || 1,
 };
 
 function getConfigValue(key: string): string {
