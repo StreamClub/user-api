@@ -6,10 +6,12 @@ import {
 import { Router } from "express";
 import { StatusCodes } from "http-status-codes";
 import { LoginSchema, RefreshCredentialsSchema, RegisterUserSchema, sendVerificationCodeSchema } from "@dtos";
-import { userController } from "@controllers";
+import { UserController } from "@controllers";
+import AppDependencies from "appDependencies";
 
-export function UserRouter() {
+export function UserRouter(dependencies: AppDependencies) {
     const router = Router();
+    const userController = new UserController(dependencies);
 
     router.post(
         "/register",

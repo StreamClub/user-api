@@ -33,6 +33,10 @@
       "@entities/*": ["entities/*"],
       "@dal": ["dal"],
       "@dal/*": ["dal/*"],
+      "@utils": ["utils"],
+      "@utils/*": ["utils/*"],
+      "@handlers": ["handlers"],
+      "@handlers/*": ["handlers/*"],
     }
   },
   "include": ["src/**/*"],
