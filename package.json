@@ -4,9 +4,9 @@
   "description": "Stream Club Process API",
   "main": "app.ts",
   "scripts": {
-    "start": "npx nodemon -e ts --exec \"npx ts-node -r tsconfig-paths/register src/index.ts\"",
+    "start": "npx nodemon -e ts --exec \"npx ts-node -r tsconfig-paths/register src/app.ts\"",
     "build": "tsc",
-    "test": "jest --coverage"
+    "test": "jest"
   },
   "author": "",
   "license": "ISC",
@@ -34,7 +34,6 @@
     "sequelize": "^6.33.0",
     "sqlite3": "^5.1.6",
     "typescript": "^5.2.2",
-    "ts-auto-mock": "^3.7.1",
     "uuid": "^9.0.1"
   },
   "devDependencies": {

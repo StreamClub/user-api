@@ -4,15 +4,8 @@ import { authService } from "./authService";
 import { User, VerificationCode } from "@entities";
 import { userRepository, verificationCodeRepository } from "@dal";
 import { generate6digitNumber, sendMail } from "utils";
-import AppDependencies from "appDependencies";
-import { MailHandlerI } from "@handlers";
 
-export class UserService {
-    private mailHandler: MailHandlerI
-    public constructor(dependencies: AppDependencies) {
-        this.mailHandler = dependencies.mailHandler;
-    }
-
+class UserService {
     public async register(
         userDto: RegisterUserDto,
     ): Promise<Credentials> {
@@ -47,8 +40,9 @@ export class UserService {
     public async sendVerificationCode(dto: sendVerificationCodeDto): Promise<void> {
         const verificationCode = generate6digitNumber();
         const verificationCodeEntity = new VerificationCode({ email: dto.email, verificationCode });
-        this.mailHandler.sendMail(dto.email, verificationCode);
+        sendMail(dto.email, verificationCode);
         await verificationCodeRepository.save(verificationCodeEntity);
         return;
     }
 }
+export const userService = new UserService();
