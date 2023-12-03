@@ -6,7 +6,7 @@
   "scripts": {
     "start": "npx nodemon -e ts --exec \"npx ts-node -r tsconfig-paths/register src/index.ts\"",
     "build": "tsc",
-    "test": "jest"
+    "test": "jest --coverage"
   },
   "author": "",
   "license": "ISC",
