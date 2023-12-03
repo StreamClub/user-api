@@ -1,4 +1,3 @@
-import cloneDeep from 'clone-deep';
 import { UserModel } from './userModel';
 import { User } from '@entities';
 
