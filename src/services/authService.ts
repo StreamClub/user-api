@@ -1,11 +1,11 @@
 import { config } from '@config';
 import { Credentials } from '@dtos';
 import { InvalidCodeException, UnauthorizedException } from '@exceptions';
-import { tokenRepository, verificationCodeRepository } from 'dal';
-import { Token } from 'entities';
+import { tokenRepository, verificationCodeRepository } from '@dal';
+import { Token } from '@entities';
 import jwt from 'jsonwebtoken';
 import passwordHash from 'password-hash';
-import { isCodeValid } from 'utils';
+import { isCodeValid } from '@utils';
 import { v1 } from 'uuid';
 
 

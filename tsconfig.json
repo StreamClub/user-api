@@ -2,7 +2,7 @@
   "compilerOptions": {
     "module": "CommonJS",
     "target": "ES2015",
-    "rootDir": "src",
+    "rootDir": ".",
     "outDir": "target",
     "esModuleInterop": true,
     "noImplicitAny": true,
@@ -37,8 +37,14 @@
       "@utils/*": ["utils/*"],
       "@handlers": ["handlers"],
       "@handlers/*": ["handlers/*"],
-    }
+    },
+    "plugins": [
+      {
+        "transform": "ts-auto-mock/transformer",
+        "cacheBetweenTests": false
+      }
+    ]
   },
-  "include": ["src/**/*"],
+  "include": ["src/**/*", "tests/**/*"],
   "exclude": ["node_modules"]
 }

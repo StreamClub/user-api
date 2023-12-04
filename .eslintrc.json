@@ -4,7 +4,7 @@
         "es2021": true
     },
     "extends": [
-        "airbnb-base",
+        "uapi-base",
         "plugin:prettier/recommended"
     ],
     "parser": "@typescript-eslint/parser",

@@ -1,12 +1,14 @@
 import { createMock } from 'ts-auto-mock';
 import { TestDb } from "./testDb";
-import AppDependencies from "../../src/appDependencies";
 import { MailHandlerI } from "../../src/handlers";
+import * as dotenv from "dotenv";
+import { App } from "../../src/app";
 
-const startServerDependencies = (): AppDependencies => {
+
+export const getTestApp = async (): Promise<any> => {
+    dotenv.config();
     const db = new TestDb();
     const mailHandler = createMock<MailHandlerI>();
-    return {
-        db, mailHandler
-    };
+    const app = new App({ db, mailHandler });
+    return await app.start();
 }
