@@ -6,7 +6,7 @@ import request from 'supertest';
 import { TestDb } from '../setup/testDb';
 import { App } from '../../src/app';
 import { createMock } from 'ts-auto-mock';
-import { MailHandler, MailHandlerI } from '@handlers';
+import { MailHandler } from '@handlers';
 
 let db: TestDb;
 let server: request.SuperTest<request.Test>;
