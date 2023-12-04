@@ -12,7 +12,7 @@ export class App {
         this.dependencies = dependencies;
     }
 
-    public async start() {
+    public async start(production = true) {
         const app = express();
 
         app.use(pinoHttp());
@@ -20,7 +20,14 @@ export class App {
         app.use(express.json());
         registerRouters(app, this.dependencies);
         app.use(exceptionToHttpError);
-        // cronjobService.start();
+        if (production) cronjobService.start();
         return app;
     }
+
+
+    public async stop() {
+        cronjobService.stop();
+    }
+
+
 }

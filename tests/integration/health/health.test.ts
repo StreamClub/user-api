@@ -3,8 +3,8 @@
 * @group health
 */
 import request from 'supertest';
-import { TestDb } from '../setup/testDb';
-import { App } from '../../src/app';
+import { TestDb } from '../../setup/testDb';
+import { App } from '../../../src/app';
 import { createMock } from 'ts-auto-mock';
 import { MailHandler } from '@handlers';
 
@@ -15,9 +15,9 @@ beforeAll(async () => {
     db = new TestDb();
     const mailHandler = new MailHandler();
     const app = new App({ db, mailHandler });
-    server = request(await app.start());
+    server = request(await app.start(false));
 });
-afterEach(async () => await db.clearDatabase());
+afterEach(async () => { await db.clearDatabase() });
 afterAll(async () => await db.closeDatabase());
 
 describe('Health', () => {
