@@ -20,7 +20,6 @@
     "express": "^4.18.2",
     "http-status-code": "^2.1.0",
     "http-status-codes": "^2.3.0",
-    "jest-ts-auto-mock": "^2.1.0",
     "joi": "^17.10.2",
     "jsonwebtoken": "^9.0.2",
     "module-alias": "^2.2.3",
@@ -36,10 +35,6 @@
     "sequelize": "^6.33.0",
     "sqlite3": "^5.1.6",
     "supertest": "^6.3.3",
-    "ts-auto-mock": "^3.7.1",
-    "ts-jest": "^29.1.1",
-    "ttypescript": "^1.5.15",
-    "typescript": "^5.3.2",
     "uuid": "^9.0.1"
   },
   "devDependencies": {
@@ -72,7 +67,8 @@
     "prettier": "3.0.3",
     "ts-node": "^10.9.1",
     "tsconfig-paths": "^4.2.0",
-    "tscpaths": "^0.0.9"
+    "tscpaths": "^0.0.9",
+    "typescript": "^5.3.2"
   },
   "_moduleAliases": {
     "@root/*": "src/*",
