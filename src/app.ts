@@ -25,11 +25,4 @@ export class App {
         };
         return app;
     }
-
-
-    public async stop() {
-        cronjobService.stop();
-    }
-
-
 }
