@@ -8,7 +8,7 @@ import { saveTestUser } from '../../helpers';
 
 describe('Login User', () => {
     setupBeforeAndAfter();
-    it('should login the user when provided with a proper mail and password', async () => {
+    it('should refresh credentials when called with the correct refresh token', async () => {
         const email = 'test@test.com'
         const password = '123456';
         await saveTestUser(email, password);
@@ -17,8 +17,13 @@ describe('Login User', () => {
                 email,
                 password
             });
-        expect(response.status).toBe(200);
-        expect(response.body).toHaveProperty('token');
-        expect(response.body).toHaveProperty('refreshToken');
+        const refreshToken = response.body.refreshToken;
+        const refreshResponse = await server.post('/users/refreshCredentials')
+            .send({
+                refreshToken
+            });
+        expect(refreshResponse.status).toBe(201);
+        expect(refreshResponse.body).toHaveProperty('token');
+        expect(refreshResponse.body).toHaveProperty('refreshToken');
     });
 });
