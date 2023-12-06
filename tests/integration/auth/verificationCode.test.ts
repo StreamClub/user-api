@@ -15,4 +15,16 @@ describe('Send Verification Code', () => {
         expect(mockSendMail).toHaveBeenCalledTimes(1);
 
     });
+
+    const invalidBodyCases = [
+        [400, 'email', '', 'empty'],
+        [400, 'email', 'notAEmail', 'not a email'],
+    ]
+
+    invalidBodyCases.forEach(([status, field, value, description]) => {
+        it(`should return ${status} when provided with an ${description} ${field}`, async () => {
+            const response = await server.post('/users/sendVerificationCode').send({ [field]: value });
+            expect(response.status).toBe(status);
+        });
+    });
 });

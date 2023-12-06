@@ -15,12 +15,14 @@ export class App {
     public async start(production = true) {
         const app = express();
 
-        app.use(pinoHttp());
         app.use(cors());
         app.use(express.json());
         registerRouters(app, this.dependencies);
         app.use(exceptionToHttpError);
-        if (production) cronjobService.start();
+        if (production) {
+            app.use(pinoHttp());
+            cronjobService.start()
+        };
         return app;
     }
 
