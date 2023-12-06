@@ -7,12 +7,14 @@ import { server, setupBeforeAndAfter } from '../../setup/testsSetup';
 import { saveTestVerificationCode } from '../../helpers';
 
 
+const endpoint = '/users/register';
+
 describe('Register User', () => {
     setupBeforeAndAfter();
     it('should register the user when provided with a proper mail, password and verification code', async () => {
         const email = 'test@test.com';
         const verificationCode = await saveTestVerificationCode(email);
-        const response = await server.post('/users/register')
+        const response = await server.post(endpoint)
             .send({
                 email,
                 password: '123456',
@@ -26,7 +28,7 @@ describe('Register User', () => {
     it('should return 400 when provided with an existing email', async () => {
         const email = 'test@test.com';
         const verificationCode = await saveTestVerificationCode(email);
-        const response1 = await server.post('/users/register')
+        const response1 = await server.post(endpoint)
             .send({
                 email,
                 password: '123456',
@@ -36,7 +38,7 @@ describe('Register User', () => {
         expect(response1.body).toHaveProperty('token');
         expect(response1.body).toHaveProperty('refreshToken');
 
-        const response = await server.post('/users/register')
+        const response = await server.post(endpoint)
             .send({
                 email,
                 password: '123456',
@@ -58,7 +60,7 @@ describe('Register User', () => {
 
     invalidBodyCases.forEach(([status, field, value, description]) => {
         it(`should return ${status} when provided with an ${description} ${field}`, async () => {
-            const response = await server.post('/users/register').send({ [field]: value });
+            const response = await server.post(endpoint).send({ [field]: value });
             expect(response.status).toBe(status);
         });
     });
