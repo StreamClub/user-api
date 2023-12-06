@@ -4,15 +4,29 @@
 */
 
 import { server, setupBeforeAndAfter } from '../../setup/testsSetup';
-import { saveTestUser } from '../../helpers';
+import { generateCredentials, saveTestUser } from '../../helpers';
 
-describe('Login User', () => {
+const endpoint = '/users/refreshCredentials';
+
+describe('Refresh User Credentials', () => {
     setupBeforeAndAfter();
+
+    const invalidBodyCases = [
+        [400, 'refreshToken', '', 'empty'],
+    ]
+
+    invalidBodyCases.forEach(([status, field, value, description]) => {
+        it(`should return ${status} when provided with an ${description} ${field}`, async () => {
+            const response = await server.post(endpoint).send({ [field]: value });
+            expect(response.status).toBe(status);
+        });
+    });
+
     it('should refresh credentials when called with the correct refresh token', async () => {
         const email = 'test@test.com';
         const password = '123456';
         const { refreshToken, token } = await saveTestUser(email, password);
-        const response = await server.post('/users/refreshCredentials')
+        const response = await server.post(endpoint)
             .send({
                 refreshToken
             });
@@ -27,7 +41,7 @@ describe('Login User', () => {
         const email = 'test@test.com';
         const password = '123456';
         await saveTestUser(email, password);
-        const response = await server.post('/users/refreshCredentials')
+        const response = await server.post(endpoint)
             .send({
                 refreshToken: 'invalidRefreshToken'
             });
@@ -38,7 +52,7 @@ describe('Login User', () => {
         const email = 'test@test.com';
         const password = '123456';
         const { token } = await saveTestUser(email, password);
-        const response = await server.post('/users/refreshCredentials')
+        const response = await server.post(endpoint)
             .send({
                 refreshToken: token
             });
@@ -51,12 +65,24 @@ describe('Login User', () => {
         const { refreshToken } = await saveTestUser(email, password);
         jest.useFakeTimers();
         jest.setSystemTime(new Date(Date.now() + 1000 * 60 * 60 * 24 * 31));
-        const response = await server.post('/users/refreshCredentials')
+        const response = await server.post(endpoint)
             .send({
                 refreshToken
             });
         expect(response.status).toBe(401);
         jest.useRealTimers();
+    });
+
+    it('should return 401 when called with an old refresh token that belongs to a non-existent user', async () => {
+        const email = 'test@test.com';
+        const password = '123456';
+        const { refreshToken: oldRefreshToken } = await saveTestUser(email, password);
+        generateCredentials(email);
+        const response = await server.post(endpoint)
+            .send({
+                refreshToken: oldRefreshToken
+            });
+        expect(response.status).toBe(401);
     });
 
 });
