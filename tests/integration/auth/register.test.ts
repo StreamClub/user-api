@@ -9,7 +9,7 @@ import { saveTestVerificationCode } from '../../helpers/verificationCodeHelper';
 
 describe('Register User', () => {
     setupBeforeAndAfter();
-    it('should return 201 when provided with an email', async () => {
+    it('should register the user when provided with a proper mail, password and verification code', async () => {
         const email = 'test@test.com';
         const verificationCode = await saveTestVerificationCode(email);
         const response = await server.post('/users/register')
@@ -21,6 +21,28 @@ describe('Register User', () => {
         expect(response.status).toBe(201);
         expect(response.body).toHaveProperty('token');
         expect(response.body).toHaveProperty('refreshToken');
+    });
+
+    it('should return 400 when provided with an existing email', async () => {
+        const email = 'test@test.com';
+        const verificationCode = await saveTestVerificationCode(email);
+        const response1 = await server.post('/users/register')
+            .send({
+                email,
+                password: '123456',
+                verificationCode
+            });
+        expect(response1.status).toBe(201);
+        expect(response1.body).toHaveProperty('token');
+        expect(response1.body).toHaveProperty('refreshToken');
+
+        const response = await server.post('/users/register')
+            .send({
+                email,
+                password: '123456',
+                verificationCode
+            });
+        expect(response.status).toBe(409);
     });
 
     const invalidBodyCases = [
