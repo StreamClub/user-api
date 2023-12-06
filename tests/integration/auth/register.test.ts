@@ -4,7 +4,7 @@
 */
 
 import { server, setupBeforeAndAfter } from '../../setup/testsSetup';
-import { saveTestVerificationCode } from '../../helpers/verificationCodeHelper';
+import { saveTestVerificationCode } from '../../helpers';
 
 
 describe('Register User', () => {
