@@ -1,2 +1,2 @@
-export * from './createUserHelper';
+export * from './userHelper';
 export * from './verificationCodeHelper';
