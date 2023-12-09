@@ -37,7 +37,7 @@ describe('Refresh User Credentials', () => {
         expect(response.body.token).not.toBe(token);
     });
 
-    it('should return 401 when called with an invalid refresh token', async () => {
+    it('should return an error when called with an invalid refresh token', async () => {
         const email = 'test@test.com';
         const password = '123456';
         await saveTestUser(email, password);
@@ -48,7 +48,7 @@ describe('Refresh User Credentials', () => {
         expect(response.status).toBe(401);
     });
 
-    it('should return 401 when called with a token', async () => {
+    it('should return an error when called with a token', async () => {
         const email = 'test@test.com';
         const password = '123456';
         const { token } = await saveTestUser(email, password);
@@ -59,7 +59,7 @@ describe('Refresh User Credentials', () => {
         expect(response.status).toBe(401);
     });
 
-    it('should return 401 when called with an expired refresh token', async () => {
+    it('should return an error when called with an expired refresh token', async () => {
         const email = 'test@test.com';
         const password = '123456';
         const { refreshToken } = await saveTestUser(email, password);
@@ -73,7 +73,7 @@ describe('Refresh User Credentials', () => {
         jest.useRealTimers();
     });
 
-    it('should return 401 when called with an old refresh token that belongs to a non-existent user', async () => {
+    it('should return an error when called with an old refresh token that belongs to a non-existent user', async () => {
         const email = 'test@test.com';
         const password = '123456';
         const { refreshToken: oldRefreshToken } = await saveTestUser(email, password);

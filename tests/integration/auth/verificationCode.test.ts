@@ -22,7 +22,7 @@ describe('Send Verification Code', () => {
         });
     });
 
-    it('should return 201 when provided with an email', async () => {
+    it('should return create a verification code when provided with an email', async () => {
         MailHandler.prototype.sendMail = mockSendMail;
         const response = await server.post(endpoint).send({ email: 'test@test.com' });
         expect(response.status).toBe(201);
