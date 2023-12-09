@@ -60,7 +60,7 @@ describe('Login User', () => {
                 email: 'wrong@email.test',
                 password
             });
-        expect(response.status).toBe(404);
+        expect(response.status).toBe(400);
     });
 
     it('should return an error when provided with an nonexisting user credentials', async () => {
@@ -71,6 +71,6 @@ describe('Login User', () => {
                 email,
                 password
             });
-        expect(response.status).toBe(401);
+        expect(response.status).toBe(404);
     });
 });
