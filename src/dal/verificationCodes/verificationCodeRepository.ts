@@ -1,5 +1,5 @@
 import { VerificationCodeModel } from './verificationCodeModel';
-import { VerificationCode } from 'entities';
+import { VerificationCode } from '@entities';
 import { Op } from 'sequelize';
 import moment from 'moment';
 import { VALIDATION_CODE_LIFE_UNIT, config } from '@config';

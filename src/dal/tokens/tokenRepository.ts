@@ -1,5 +1,5 @@
 import { TokenModel } from './tokenModel';
-import { Token } from 'entities';
+import { Token } from '@entities';
 
 
 class TokenRepository {

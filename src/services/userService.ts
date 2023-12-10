@@ -3,9 +3,9 @@ import { DomainException, NotFoundException } from "@exceptions";
 import { authService } from "./authService";
 import { User, VerificationCode } from "@entities";
 import { userRepository, verificationCodeRepository } from "@dal";
-import { generate6digitNumber, sendMail } from "utils";
-import AppDependencies from "appDependencies";
+import { generate6digitNumber } from "@utils";
 import { MailHandlerI } from "@handlers";
+import AppDependencies from "appDependencies";
 
 export class UserService {
     private mailHandler: MailHandlerI

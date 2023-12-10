@@ -19,23 +19,13 @@ dotenv.config();
 
 export const config: Config = {
     port: Number(process.env.PORT) || 8080,
-    tokenKey: getConfigValue('TOKEN_KEY'),
-    refreshTokenKey: getConfigValue('REFRESH_TOKEN_KEY'),
-    tokenLifeMinutes: Number(getConfigValue('TOKEN_LIFE_MINUTES')),
-    refreshTokenLifeMinutes: Number(getConfigValue('REFRESH_TOKEN_LIFE_MINUTES')),
-    dbUrl: getConfigValue('DB_URL'),
-    senderEmail: getConfigValue('SENDER_EMAIL'),
-    senderPassword: getConfigValue('SENDER_PASSWORD'),
-    verificationCodeLifeMinutes: Number(getConfigValue('VALIDATION_CODE_LIFE_MINUTES')) || 1,
-    validationCodeCronExpression: getConfigValue('VALIDATION_CODE_CRON_EXPRESSION') || '*/5 * * * *',
+    tokenKey: process.env.TOKEN_KEY || 'secret',
+    refreshTokenKey: process.env.REFRESH_TOKEN_KEY || 'secret',
+    tokenLifeMinutes: Number(process.env.TOKEN_LIFE_MINUTES) || 5,
+    refreshTokenLifeMinutes: Number(process.env.REFRESH_TOKEN_LIFE_MINUTES) || 10,
+    dbUrl: process.env.DB_URL || 'YOUR_DB_URL',
+    senderEmail: process.env.SENDER_EMAIL || 'YOUR_EMAIL',
+    senderPassword: process.env.SENDER_PASSWORD || 'YOUR_PASSWORD',
+    verificationCodeLifeMinutes: Number(process.env.VERIFICATION_CODE_LIFE_MINUTES) || 5,
+    validationCodeCronExpression: process.env.VALIDATION_CODE_CRON_EXPRESSION || '*/5 * * * *',
 };
-
-function getConfigValue(key: string): string {
-    const value = process.env[key];
-    if (!value) {
-        throw new MissingConfigValueException(
-            `Missing config value for attribute ${key}`,
-        );
-    }
-    return value;
-}
