@@ -19,5 +19,9 @@ class CronjobService {
             }
         });
     }
+
+    public async stop() {
+        schedule.cancelJob(config.validationCodeCronExpression);
+    }
 }
 export const cronjobService = new CronjobService();

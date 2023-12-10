@@ -1,21 +1,18 @@
 import { config } from '@config';
 import { Credentials } from '@dtos';
 import { InvalidCodeException, UnauthorizedException } from '@exceptions';
-import { tokenRepository, verificationCodeRepository } from 'dal';
-import { Token } from 'entities';
+import { tokenRepository, verificationCodeRepository } from '@dal';
+import { Token } from '@entities';
 import jwt from 'jsonwebtoken';
 import passwordHash from 'password-hash';
-import { isCodeValid } from 'utils';
+import { isCodeValid } from '@utils';
 import { v1 } from 'uuid';
 
 
 class AuthService {
 
     public async generateJWT(receivedRefreshToken: string): Promise<Credentials> {
-        const refreshTokenData = jwt.verify(
-            receivedRefreshToken,
-            config.refreshTokenKey,
-        ) as { email: string; uuid: string };
+        const refreshTokenData = this.decodeToken(receivedRefreshToken, config.refreshTokenKey);
         if (!refreshTokenData) {
             throw new UnauthorizedException('Invalid refresh token');
         }
@@ -28,7 +25,18 @@ class AuthService {
         if (storedRefreshToken.refreshToken !== receivedRefreshToken) {
             throw new UnauthorizedException('Refresh token not related to user');
         }
-        return this.generateTokens(refreshTokenData.email);
+        return await this.generateTokens(refreshTokenData.email);
+    }
+
+    private decodeToken(token: string, tokenKey: string): { email: string; uuid: string } {
+        try {
+            return jwt.verify(token, tokenKey) as {
+                email: string;
+                uuid: string;
+            };
+        } catch (error) {
+            throw new UnauthorizedException('Invalid refresh token')
+        }
     }
 
     public async generateTokens(email: string): Promise<Credentials> {

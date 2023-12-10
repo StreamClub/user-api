@@ -1,7 +1,7 @@
-import { DbI } from "@dal/dbConnectionI"
+import { Db } from "@dal";
 import { MailHandlerI } from "@handlers";
 
 export default interface AppDependencies {
-    db: DbI;
+    db: Db;
     mailHandler: MailHandlerI
 }
