@@ -1,5 +1,5 @@
 import { StatusCodes } from "http-status-codes";
-import { ApiException } from "./apiException";
+import { ApiException } from "../apiException";
 
 export class UnauthorizedException extends ApiException {
   constructor(message: string) {

@@ -13,13 +13,13 @@ export function exceptionToHttpError(
 ) {
   let code: number;
   let description: string;
-
-  if (error instanceof ApiException) {
-    code = error.code;
-    description = error.description;
+  const e = error as ApiException;
+  if (e) {
+    code = e.code;
+    description = e.description;
   } else {
     code = StatusCodes.INTERNAL_SERVER_ERROR;
-    description = 'Unexpected Internal Server Error';
+    description = 'Internal server error';
   }
 
   res.status(code).json({

@@ -1,5 +1,2 @@
-export * from './domainException';
-export * from './notFoundException';
-export * from './unauthorizedException';
-export * from './invalidCodeException';
-export * from './unableToSendEmailException';
+export * from './general';
+export * from './auth';
