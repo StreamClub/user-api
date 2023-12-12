@@ -1,6 +1,10 @@
-export class UnableToSendEmailException extends Error {
+import { StatusCodes } from "http-status-codes";
+import { ApiException } from "./apiException";
+
+export class UnableToSendEmailException extends ApiException {
     constructor(message: string) {
         super(message);
-        Object.setPrototypeOf(this, UnableToSendEmailException.prototype);
+        this.code = StatusCodes.INTERNAL_SERVER_ERROR;
+        this.description = "Unable To Send Email";
     }
 }

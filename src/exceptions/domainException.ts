@@ -1,6 +1,11 @@
-export class DomainException extends Error {
-    constructor(message: string) {
-      super(message);
-      Object.setPrototypeOf(this, DomainException.prototype);
-    }
+import { StatusCodes } from "http-status-codes";
+import { ApiException } from "./apiException";
+
+export class DomainException extends ApiException {
+  constructor(message: string) {
+    super(message);
+    this.code = StatusCodes.CONFLICT;
+    this.description = "Domain Exception";
+    Object.setPrototypeOf(this, DomainException.prototype);
+  }
 }

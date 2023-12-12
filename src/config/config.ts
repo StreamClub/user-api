@@ -1,4 +1,3 @@
-import { MissingConfigValueException } from '@exceptions';
 import dotenv from 'dotenv';
 
 type Config = {

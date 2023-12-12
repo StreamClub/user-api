@@ -1,6 +1,10 @@
-export class UnauthorizedException extends Error {
-    constructor(message: string) {
-      super(message);
-      Object.setPrototypeOf(this, UnauthorizedException.prototype);
-    }
+import { StatusCodes } from "http-status-codes";
+import { ApiException } from "./apiException";
+
+export class UnauthorizedException extends ApiException {
+  constructor(message: string) {
+    super(message);
+    this.code = StatusCodes.UNAUTHORIZED;
+    this.description = "Unauthorized";
+  }
 }

@@ -1,6 +1,10 @@
-export class InvalidCodeException extends Error {
+import { StatusCodes } from "http-status-codes";
+import { ApiException } from "./apiException";
+
+export class InvalidCodeException extends ApiException {
     constructor() {
-        super("The code you entered is invalid. Please try again.");
-        Object.setPrototypeOf(this, InvalidCodeException.prototype);
+        super("El código ingresado es inválido. Por favor, intente nuevamente.");
+        this.code = StatusCodes.UNAUTHORIZED;
+        this.description = "Invalid Code";
     }
 }

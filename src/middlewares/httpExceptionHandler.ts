@@ -1,9 +1,4 @@
-import {
-  DomainException,
-  InvalidCodeException,
-  NotFoundException,
-  UnauthorizedException,
-} from '@exceptions';
+import { ApiException } from '@exceptions/apiException';
 import { NextFunction, Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 
@@ -19,21 +14,12 @@ export function exceptionToHttpError(
   let code: number;
   let description: string;
 
-  if (error instanceof DomainException) {
-    code = StatusCodes.CONFLICT;
-    description = 'Invalid operation';
-  } else if (error instanceof NotFoundException) {
-    code = StatusCodes.NOT_FOUND;
-    description = 'Not found';
-  } else if (error instanceof UnauthorizedException) {
-    code = StatusCodes.UNAUTHORIZED;
-    description = 'Unauthorized';
-  } else if (error instanceof InvalidCodeException) {
-    code = StatusCodes.UNAUTHORIZED;
-    description = 'Invalid code';
+  if (error instanceof ApiException) {
+    code = error.code;
+    description = error.description;
   } else {
     code = StatusCodes.INTERNAL_SERVER_ERROR;
-    description = 'Internal server error';
+    description = 'Unexpected Internal Server Error';
   }
 
   res.status(code).json({
