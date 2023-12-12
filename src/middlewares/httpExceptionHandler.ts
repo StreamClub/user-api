@@ -14,14 +14,13 @@ export function exceptionToHttpError(
   let code: number;
   let description: string;
   const e = error as ApiException;
-  if (e) {
+  if (e.isScException) {
     code = e.code;
     description = e.description;
   } else {
     code = StatusCodes.INTERNAL_SERVER_ERROR;
     description = 'Internal server error';
   }
-
   res.status(code).json({
     error: error.message,
     statusCode: code,
