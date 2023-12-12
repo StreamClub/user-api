@@ -6,7 +6,7 @@
 import { server, setupBeforeAndAfter } from '../../setup/testsSetup';
 import { generateCredentials, saveTestUser } from '../../helpers';
 
-const endpoint = '/users/refreshCredentials';
+const endpoint = '/auth/refreshCredentials';
 
 describe('Refresh User Credentials', () => {
     setupBeforeAndAfter();

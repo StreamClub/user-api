@@ -13,8 +13,7 @@ export function handleRequest<T, U>(
   ): Promise<void> => {
     try {
       const resObject = await handler(req);
-      if (!resObject) res.status(statusCode).send();
-      res.status(statusCode).json(resObject);
+      resObject ? res.status(statusCode).json(resObject) : res.status(statusCode).send();
     } catch (error) {
       next(error);
     }

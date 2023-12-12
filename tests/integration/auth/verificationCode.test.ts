@@ -6,7 +6,7 @@
 import { MailHandler } from '@handlers';
 import { mockSendMail, server, setupBeforeAndAfter } from '../../setup/testsSetup';
 
-const endpoint = '/users/sendVerificationCode';
+const endpoint = '/auth/sendVerificationCode';
 
 describe('Send Verification Code', () => {
     setupBeforeAndAfter();

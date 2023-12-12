@@ -7,7 +7,7 @@ import { server, setupBeforeAndAfter } from '../../setup/testsSetup';
 import { saveTestVerificationCode } from '../../helpers';
 
 
-const endpoint = '/users/register';
+const endpoint = '/auth/register';
 
 describe('Register User', () => {
     setupBeforeAndAfter();
