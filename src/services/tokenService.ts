@@ -1,0 +1,90 @@
+import { config } from '@config';
+import { Credentials } from '@dtos';
+import { InvalidCodeException, UnauthorizedException } from '@exceptions';
+import { tokenRepository, verificationCodeRepository } from '@dal';
+import { Token } from '@entities';
+import jwt from 'jsonwebtoken';
+import passwordHash from 'password-hash';
+import { isCodeValid } from '@utils';
+import { v1 } from 'uuid';
+
+
+class TokenService {
+
+    public async generateJWT(receivedRefreshToken: string): Promise<Credentials> {
+        const refreshTokenData = this.decodeToken(receivedRefreshToken, config.refreshTokenKey);
+        if (!refreshTokenData) {
+            throw new UnauthorizedException('Invalid refresh token');
+        }
+        const storedRefreshToken = await tokenRepository.findOneByEmail(
+            refreshTokenData.email,
+        );
+        if (!storedRefreshToken) {
+            throw new UnauthorizedException('Refresh token does not exist');
+        }
+        if (storedRefreshToken.refreshToken !== receivedRefreshToken) {
+            throw new UnauthorizedException('Refresh token not related to user');
+        }
+        return await this.generateTokens(refreshTokenData.email);
+    }
+
+    private decodeToken(token: string, tokenKey: string): { email: string; uuid: string } {
+        try {
+            return jwt.verify(token, tokenKey) as {
+                email: string;
+                uuid: string;
+            };
+        } catch (error) {
+            throw new UnauthorizedException('Invalid refresh token')
+        }
+    }
+
+    public async generateTokens(email: string): Promise<Credentials> {
+        const token = jwt.sign({ email, uuid: v1() }, config.tokenKey, {
+            expiresIn: `${config.tokenLifeMinutes * 60}s`,
+        });
+        const refreshTokenValue = jwt.sign(
+            { email, uuid: v1() },
+            config.refreshTokenKey,
+            {
+                expiresIn: `${config.refreshTokenLifeMinutes * 60}s`,
+            },
+        );
+        const refreshToken = new Token({
+            email,
+            refreshToken: refreshTokenValue,
+        });
+        await tokenRepository.save(refreshToken);
+        return { token, refreshToken: refreshTokenValue };
+    }
+
+    public async deleteRefreshToken(email: string) {
+        return tokenRepository.deleteRefreshToken(email);
+    }
+
+    public hashPassword(password: string): string {
+        return passwordHash.generate(password, {
+            algorithm: 'sha256',
+            iterations: 5,
+            saltLength: 10,
+        });
+    }
+
+    public isValidPassword(password: string, hashedPassword: string): boolean {
+        return passwordHash.verify(password, hashedPassword);
+    }
+
+    public async validateCode(email: string, code: number): Promise<void> {
+        const verificationCode = await verificationCodeRepository.findOneByEmail(email);
+        if (!verificationCode || verificationCode.verificationCode !== code || !isCodeValid(verificationCode.updatedAt)) {
+            throw new InvalidCodeException();
+        }
+        return;
+    }
+
+    public async deleteExpiredVerificationCodes(): Promise<void> {
+        return verificationCodeRepository.deleteExpiredVerificationCodes();
+    }
+}
+
+export const tokenService = new TokenService();

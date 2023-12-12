@@ -6,7 +6,7 @@
 import { server, setupBeforeAndAfter } from '../../setup/testsSetup';
 import { saveTestUser } from '../../helpers';
 
-const endpoint = '/users/login';
+const endpoint = '/auth/login';
 
 describe('Login User', () => {
     setupBeforeAndAfter();

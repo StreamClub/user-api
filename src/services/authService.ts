@@ -1,90 +1,54 @@
-import { config } from '@config';
-import { Credentials } from '@dtos';
-import { InvalidCodeException, UnauthorizedException } from '@exceptions';
-import { tokenRepository, verificationCodeRepository } from '@dal';
-import { Token } from '@entities';
-import jwt from 'jsonwebtoken';
-import passwordHash from 'password-hash';
-import { isCodeValid } from '@utils';
-import { v1 } from 'uuid';
+import { Credentials, LoginDto, RegisterUserDto, sendVerificationCodeDto } from "@dtos";
+import { DomainException, NotFoundException } from "@exceptions";
+import { tokenService } from "./tokenService";
+import { User, VerificationCode } from "@entities";
+import { userRepository, verificationCodeRepository } from "@dal";
+import { generate6digitNumber } from "@utils";
+import { MailHandlerI } from "@handlers";
+import AppDependencies from "appDependencies";
 
+export class authService {
+    private mailHandler: MailHandlerI
+    public constructor(dependencies: AppDependencies) {
+        this.mailHandler = dependencies.mailHandler;
+    }
 
-class AuthService {
-
-    public async generateJWT(receivedRefreshToken: string): Promise<Credentials> {
-        const refreshTokenData = this.decodeToken(receivedRefreshToken, config.refreshTokenKey);
-        if (!refreshTokenData) {
-            throw new UnauthorizedException('Invalid refresh token');
+    public async register(
+        userDto: RegisterUserDto,
+    ): Promise<Credentials> {
+        //TODO: Crear un user name en base al mail del usuario. Agarrar el correo y pasarlo
+        const userAlreadyExists =
+            (await userRepository.findOneByEmail(userDto.email)) !== null;
+        if (userAlreadyExists) {
+            throw new DomainException('The email is already in use');
         }
-        const storedRefreshToken = await tokenRepository.findOneByEmail(
-            refreshTokenData.email,
+        const hashedPassword = tokenService.hashPassword(userDto.password);
+        await userRepository.save(
+            new User({
+                ...userDto,
+                password: hashedPassword,
+            }),
         );
-        if (!storedRefreshToken) {
-            throw new UnauthorizedException('Refresh token does not exist');
+        return tokenService.generateTokens(userDto.email);
+    }
+
+    public async login(
+        userDto: LoginDto,
+    ): Promise<Credentials> {
+        const user = await userRepository.findOneByEmail(userDto.email);
+        const isValidLogin =
+            user && tokenService.isValidPassword(userDto.password, user.password);
+        if (!isValidLogin) {
+            throw new NotFoundException('Invalid credentials');
         }
-        if (storedRefreshToken.refreshToken !== receivedRefreshToken) {
-            throw new UnauthorizedException('Refresh token not related to user');
-        }
-        return await this.generateTokens(refreshTokenData.email);
+        return tokenService.generateTokens(userDto.email);
     }
 
-    private decodeToken(token: string, tokenKey: string): { email: string; uuid: string } {
-        try {
-            return jwt.verify(token, tokenKey) as {
-                email: string;
-                uuid: string;
-            };
-        } catch (error) {
-            throw new UnauthorizedException('Invalid refresh token')
-        }
-    }
-
-    public async generateTokens(email: string): Promise<Credentials> {
-        const token = jwt.sign({ email, uuid: v1() }, config.tokenKey, {
-            expiresIn: `${config.tokenLifeMinutes * 60}s`,
-        });
-        const refreshTokenValue = jwt.sign(
-            { email, uuid: v1() },
-            config.refreshTokenKey,
-            {
-                expiresIn: `${config.refreshTokenLifeMinutes * 60}s`,
-            },
-        );
-        const refreshToken = new Token({
-            email,
-            refreshToken: refreshTokenValue,
-        });
-        await tokenRepository.save(refreshToken);
-        return { token, refreshToken: refreshTokenValue };
-    }
-
-    public async deleteRefreshToken(email: string) {
-        return tokenRepository.deleteRefreshToken(email);
-    }
-
-    public hashPassword(password: string): string {
-        return passwordHash.generate(password, {
-            algorithm: 'sha256',
-            iterations: 5,
-            saltLength: 10,
-        });
-    }
-
-    public isValidPassword(password: string, hashedPassword: string): boolean {
-        return passwordHash.verify(password, hashedPassword);
-    }
-
-    public async validateCode(email: string, code: number): Promise<void> {
-        const verificationCode = await verificationCodeRepository.findOneByEmail(email);
-        if (!verificationCode || verificationCode.verificationCode !== code || !isCodeValid(verificationCode.updatedAt)) {
-            throw new InvalidCodeException();
-        }
+    public async sendVerificationCode(dto: sendVerificationCodeDto): Promise<void> {
+        const verificationCode = generate6digitNumber();
+        const verificationCodeEntity = new VerificationCode({ email: dto.email, verificationCode });
+        this.mailHandler.sendMail(dto.email, verificationCode);
+        await verificationCodeRepository.save(verificationCodeEntity);
         return;
     }
-
-    public async deleteExpiredVerificationCodes(): Promise<void> {
-        return verificationCodeRepository.deleteExpiredVerificationCodes();
-    }
 }
-
-export const authService = new AuthService();
