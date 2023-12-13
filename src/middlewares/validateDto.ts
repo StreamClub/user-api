@@ -1,5 +1,6 @@
 import { ObjectSchema } from "joi";
 import { NextFunction, Request, Response } from "express";
+import { StatusCodes } from "http-status-codes";
 
 export enum FieldOptions {
   body = "body",
@@ -29,7 +30,11 @@ export const validateSchema = (
         };
       });
       res.setHeader("Content-Type", "application/json");
-      res.status(400).send(JSON.stringify(errors));
+      res.status(StatusCodes.BAD_REQUEST).send(JSON.stringify({
+        code: StatusCodes.BAD_REQUEST,
+        description: "Bad Request",
+        error: errors
+      }));
     }
   };
 };

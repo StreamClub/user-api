@@ -48,7 +48,7 @@ describe('Login User', () => {
                 email,
                 password: 'wrongPassword'
             });
-        expect(response.status).toBe(404);
+        expect(response.status).toBe(401);
     });
 
     it('should return an error when provided with a wrong email', async () => {
@@ -71,6 +71,6 @@ describe('Login User', () => {
                 email,
                 password
             });
-        expect(response.status).toBe(404);
+        expect(response.status).toBe(401);
     });
 });

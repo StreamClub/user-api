@@ -14,16 +14,16 @@ class TokenService {
     public async generateJWT(receivedRefreshToken: string): Promise<Credentials> {
         const refreshTokenData = this.decodeToken(receivedRefreshToken, config.refreshTokenKey);
         if (!refreshTokenData) {
-            throw new UnauthorizedException('Invalid refresh token');
+            throw new UnauthorizedException('El token de refresco es inválido');
         }
         const storedRefreshToken = await tokenRepository.findOneByEmail(
             refreshTokenData.email,
         );
         if (!storedRefreshToken) {
-            throw new UnauthorizedException('Refresh token does not exist');
+            throw new UnauthorizedException('El token de refresco no existe');
         }
         if (storedRefreshToken.refreshToken !== receivedRefreshToken) {
-            throw new UnauthorizedException('Refresh token not related to user');
+            throw new UnauthorizedException('El token de refresco no pertenece con ninguno usuario');
         }
         return await this.generateTokens(refreshTokenData.email);
     }
@@ -35,7 +35,7 @@ class TokenService {
                 uuid: string;
             };
         } catch (error) {
-            throw new UnauthorizedException('Invalid refresh token')
+            throw new UnauthorizedException('El token es inválido')
         }
     }
 
