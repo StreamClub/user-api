@@ -1,5 +1,5 @@
 import { Credentials, LoginDto, RegisterUserDto, sendVerificationCodeDto } from "@dtos";
-import { DomainException, NotFoundException } from "@exceptions";
+import { DomainException, MailInUseException, UnauthorizedException } from "@exceptions";
 import { tokenService } from "./tokenService";
 import { User, VerificationCode } from "@entities";
 import { userRepository, verificationCodeRepository } from "@dal";
@@ -20,7 +20,7 @@ export class authService {
         const userAlreadyExists =
             (await userRepository.findOneByEmail(userDto.email)) !== null;
         if (userAlreadyExists) {
-            throw new DomainException('The email is already in use');
+            throw new MailInUseException();
         }
         const hashedPassword = tokenService.hashPassword(userDto.password);
         await userRepository.save(
@@ -39,7 +39,7 @@ export class authService {
         const isValidLogin =
             user && tokenService.isValidPassword(userDto.password, user.password);
         if (!isValidLogin) {
-            throw new NotFoundException('Invalid credentials');
+            throw new UnauthorizedException('Las credenciales ingresadas son incorrectas.');
         }
         return tokenService.generateTokens(userDto.email);
     }
