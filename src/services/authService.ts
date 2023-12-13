@@ -1,5 +1,5 @@
 import { Credentials, LoginDto, RegisterUserDto, sendVerificationCodeDto } from "@dtos";
-import { DomainException, UnauthorizedException } from "@exceptions";
+import { DomainException, MailInUseException, UnauthorizedException } from "@exceptions";
 import { tokenService } from "./tokenService";
 import { User, VerificationCode } from "@entities";
 import { userRepository, verificationCodeRepository } from "@dal";
@@ -20,7 +20,7 @@ export class authService {
         const userAlreadyExists =
             (await userRepository.findOneByEmail(userDto.email)) !== null;
         if (userAlreadyExists) {
-            throw new DomainException('El correo ingresado ya se encuentra registrado.');
+            throw new MailInUseException();
         }
         const hashedPassword = tokenService.hashPassword(userDto.password);
         await userRepository.save(
