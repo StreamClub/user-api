@@ -1,5 +1,5 @@
 import { Credentials, LoginDto, RegisterUserDto, sendVerificationCodeDto } from "@dtos";
-import { DomainException, MailInUseException, UnauthorizedException } from "@exceptions";
+import { UnauthorizedException } from "@exceptions";
 import { tokenService } from "./tokenService";
 import { User, VerificationCode } from "@entities";
 import { userRepository, verificationCodeRepository } from "@dal";
@@ -17,11 +17,6 @@ export class authService {
         userDto: RegisterUserDto,
     ): Promise<Credentials> {
         //TODO: Crear un user name en base al mail del usuario. Agarrar el correo y pasarlo
-        const userAlreadyExists =
-            (await userRepository.findOneByEmail(userDto.email)) !== null;
-        if (userAlreadyExists) {
-            throw new MailInUseException();
-        }
         const hashedPassword = tokenService.hashPassword(userDto.password);
         await userRepository.save(
             new User({
