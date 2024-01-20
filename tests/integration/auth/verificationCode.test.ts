@@ -5,6 +5,7 @@
 
 import { MailHandler } from '@handlers';
 import { mockSendMail, server, setupBeforeAndAfter } from '../../setup/testsSetup';
+import { saveTestUser } from '../../helpers';
 
 const endpoint = '/auth/sendVerificationCode';
 
@@ -28,6 +29,15 @@ describe('Send Verification Code', () => {
         expect(response.status).toBe(201);
         expect(mockSendMail).toHaveBeenCalledTimes(1);
 
+    });
+
+    it('should return an error when provided with an existing email', async () => {
+        const email = 'test@test.com';
+        saveTestUser(email, 'password');
+        MailHandler.prototype.sendMail = mockSendMail;
+        const response = await server.post(endpoint).send({ email });
+        expect(response.status).toBe(409);
+        expect(mockSendMail).toHaveBeenCalledTimes(1);
     });
 
 });
