@@ -18,13 +18,13 @@ export class authService {
     ): Promise<Credentials> {
         //TODO: Crear un user name en base al mail del usuario. Agarrar el correo y pasarlo
         const hashedPassword = tokenService.hashPassword(userDto.password);
-        await userRepository.save(
+        const user = await userRepository.save(
             new User({
                 ...userDto,
                 password: hashedPassword,
             }),
         );
-        return tokenService.generateTokens(userDto.email);
+        return tokenService.generateTokens(userDto.email, user.id);
     }
 
     public async login(
@@ -36,7 +36,7 @@ export class authService {
         if (!isValidLogin) {
             throw new UnauthorizedException('Las credenciales ingresadas son incorrectas.');
         }
-        return tokenService.generateTokens(userDto.email);
+        return tokenService.generateTokens(userDto.email, user.id);
     }
 
     public async sendVerificationCode(dto: sendVerificationCodeDto): Promise<void> {
