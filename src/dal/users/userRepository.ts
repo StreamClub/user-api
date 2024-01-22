@@ -3,8 +3,8 @@ import { User } from '@entities';
 
 
 class UserRepository {
-    public async save(user: User) {
-        await UserModel.create({ ...user });
+    public async save(user: User): Promise<User> {
+        return (await UserModel.create({ ...user })).toJSON();
     }
 
     public async findOneByEmail(email: string): Promise<User | null> {
