@@ -6,12 +6,13 @@ import { tokenService } from "@services";
 
 export async function saveTestUser(email: string, password: string): Promise<Credentials> {
     const hashedPassword = tokenService.hashPassword(password);
-    await userRepository.save(new User({ email, password: hashedPassword }));
-    return tokenService.generateTokens(email)
+    const user = await userRepository.save(new User({ email, password: hashedPassword }));
+    return tokenService.generateTokens(email, user.id)
 }
 
 export async function generateCredentials(email: string): Promise<Credentials> {
-    if (await userRepository.findOneByEmail(email)) {
-        return tokenService.generateTokens(email);
+    const user = await userRepository.findOneByEmail(email);
+    if (user) {
+        return tokenService.generateTokens(email, user.id);
     }
 }
