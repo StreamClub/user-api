@@ -5,11 +5,11 @@ import AppDependencies from "./appDependencies";
 import { Db } from "@dal";
 import { MailHandler } from "@handlers";
 import { config } from "@config";
-import pinoLogger from "pino";
 import http from "http";
+import { logger } from "@utils";
 
 const startServerDependencies = (): AppDependencies => {
-    const db = new Db(config.dbUrl, true);
+    const db = new Db(config.dbUrl, false);
     const mailHandler = new MailHandler();
     return {
         db, mailHandler
@@ -21,7 +21,6 @@ const dependencies = startServerDependencies();
 new App(dependencies).start().then(app => {
     const server = http.createServer(app);
     server.listen(config.port, () => {
-        const logger = pinoLogger();
-        logger.info(`Users API listening on port ${config.port}`);
+        logger.info(`User Api Listening on Port: ${process.env.EXTERNAL_PORT}`)
     });
 });

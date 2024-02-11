@@ -1,7 +1,6 @@
 import express from "express";
 import cors from "cors";
-import { pinoHttp } from 'pino-http';
-import { exceptionToHttpError } from '@middlewares';
+import { exceptionToHttpError, loggerMiddleware } from '@middlewares';
 import { registerRouters } from "@routes";
 import { cronjobService } from "@services";
 import AppDependencies from "./appDependencies";
@@ -20,9 +19,10 @@ export class App {
         registerRouters(app, this.dependencies);
         app.use(exceptionToHttpError);
         if (production) {
-            app.use(pinoHttp());
+            app.use(loggerMiddleware);
             cronjobService.start()
         };
+
         return app;
     }
 }
