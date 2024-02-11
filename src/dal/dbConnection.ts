@@ -1,4 +1,5 @@
 import { initTokenModel, initUserModel, initVerificationCodeModel } from "@dal";
+import { logger } from "@utils";
 import { Sequelize } from "sequelize";
 
 
@@ -9,7 +10,7 @@ export class Db {
         this.dbConnection
             .authenticate()
             .catch(err => {
-                console.error('Unable to connect to the database:', err);
+                logger.error(`Unable to connect to the database: ${err.message}`);
             });
         initTokenModel(this.dbConnection);
         initUserModel(this.dbConnection);

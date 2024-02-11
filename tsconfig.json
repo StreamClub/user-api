@@ -36,7 +36,7 @@
       "@utils": ["utils"],
       "@utils/*": ["utils/*"],
       "@handlers": ["handlers"],
-      "@handlers/*": ["handlers/*"],
+      "@handlers/*": ["handlers/*"]
     },
     "plugins": [
       {

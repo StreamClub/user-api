@@ -1,12 +1,10 @@
 import schedule from "node-schedule";
-import pinoLogger from "pino";
 import { tokenService } from "@services";
 import { config } from "@config";
+import { logger } from "@utils";
 
 class CronjobService {
-    private logger: any;
     public start() {
-        this.logger = pinoLogger();
         this.deleteExpiredVerificationCodes();
     }
 
@@ -15,7 +13,7 @@ class CronjobService {
             try {
                 tokenService.deleteExpiredVerificationCodes();
             } catch (error: any) {
-                this.logger.error(error.message);
+                logger.error(error.message);
             }
         });
     }
