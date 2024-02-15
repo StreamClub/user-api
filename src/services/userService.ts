@@ -6,8 +6,11 @@ export class userService {
     public constructor(dependencies: AppDependencies) {
     }
 
-    public async findUserByEmail(email: string): Promise<User> {
+    public async findByEmail(email: string): Promise<User> {
         return await userRepository.findOneByEmail(email);
     }
 
+    public async findById(id: number): Promise<User> {
+        return await userRepository.findOneById(id);
+    }
 }

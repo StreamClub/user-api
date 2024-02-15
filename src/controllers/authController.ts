@@ -39,7 +39,7 @@ export class AuthController {
   }
 
   private async failIfMailIsInUse(email: string): Promise<void> {
-    const user = await this.userService.findUserByEmail(email);
+    const user = await this.userService.findByEmail(email);
     if (user) {
       throw new MailInUseException();
     }
