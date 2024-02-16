@@ -1,14 +1,14 @@
 import { Request } from '@models';
 import { RegisterUserDto } from '@dtos';
-import { userService } from '@services';
+import { UserService } from '@services';
 import AppDependencies from 'appDependencies';
 import { User } from '@entities';
 import { NotFoundException } from '@exceptions';
 
 export class UserController {
-    private userService: userService;
+    private userService: UserService;
     public constructor(dependencies: AppDependencies) {
-        this.userService = new userService(dependencies);
+        this.userService = new UserService(dependencies);
     }
 
     public async get(

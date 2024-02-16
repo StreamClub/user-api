@@ -1,13 +1,14 @@
 import { userRepository } from "@dal";
 import { Credentials } from "@dtos";
-import { User } from "@entities";
-import { tokenService } from "@services";
+import { AuthService, tokenService } from "@services";
+import { appDependencies } from "../setup/testsSetup";
 
 
 export async function saveTestUser(email: string, password: string): Promise<Credentials> {
+    const authService = new AuthService(appDependencies);
     const hashedPassword = tokenService.hashPassword(password);
-    const user = await userRepository.save(new User({ email, password: hashedPassword }));
-    return tokenService.generateTokens(email, user.id)
+    const registerUser = { email, password: hashedPassword, verificationCode: 123456 };
+    return await authService.register(registerUser);
 }
 
 export async function generateCredentials(email: string): Promise<Credentials> {

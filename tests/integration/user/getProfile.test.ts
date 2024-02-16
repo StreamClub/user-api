@@ -45,6 +45,6 @@ describe('Get User Profile', () => {
         const user = response.body;
         expect(user.id).toBe(1);
         expect(user.email).toBe('test@test.com');
-
+        expect(user.userName).toBe('test1');
     });
 });

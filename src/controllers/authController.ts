@@ -1,17 +1,17 @@
 import { Request } from '@models';
 import { RegisterUserDto, LoginDto, RefreshCredentialsDto, sendVerificationCodeDto } from '@dtos';
-import { authService, userService } from '@services';
+import { AuthService, UserService } from '@services';
 import { Credentials } from '@dtos';
 import { tokenService } from '@services';
 import AppDependencies from 'appDependencies';
 import { MailInUseException } from '@exceptions';
 
 export class AuthController {
-  private authService: authService;
-  private userService: userService;
+  private authService: AuthService;
+  private userService: UserService;
   public constructor(dependencies: AppDependencies) {
-    this.authService = new authService(dependencies);
-    this.userService = new userService(dependencies);
+    this.authService = new AuthService(dependencies);
+    this.userService = new UserService(dependencies);
   }
 
 

@@ -2,7 +2,7 @@ import { userRepository } from "@dal";
 import AppDependencies from "appDependencies";
 import { User } from "@entities";
 
-export class userService {
+export class UserService {
     public constructor(dependencies: AppDependencies) {
     }
 
