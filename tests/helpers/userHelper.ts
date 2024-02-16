@@ -6,8 +6,7 @@ import { appDependencies } from "../setup/testsSetup";
 
 export async function saveTestUser(email: string, password: string): Promise<Credentials> {
     const authService = new AuthService(appDependencies);
-    const hashedPassword = tokenService.hashPassword(password);
-    const registerUser = { email, password: hashedPassword, verificationCode: 123456 };
+    const registerUser = { email, password, verificationCode: 123456 };
     return await authService.register(registerUser);
 }
 
