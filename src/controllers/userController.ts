@@ -1,5 +1,5 @@
 import { Request } from '@models';
-import { RegisterUserDto } from '@dtos';
+import { GetProfileDto, RegisterUserDto } from '@dtos';
 import { UserService } from '@services';
 import AppDependencies from 'appDependencies';
 import { Profile, User } from '@entities';
@@ -12,7 +12,7 @@ export class UserController {
     }
 
     public async get(
-        req: Request<RegisterUserDto>,
+        req: Request<GetProfileDto>,
     ): Promise<Profile> {
         const userId = Number(req.params.userId);
         const userProfile = await this.userService.findById(userId);

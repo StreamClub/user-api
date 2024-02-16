@@ -7,8 +7,11 @@ export class Profile {
     public displayName!: string;
     public friendsCount!: number;
 
-    constructor(data: Partial<User>) {
-        Object.assign(this, data);
+    constructor(user: User) {
+        this.id = user.id;
+        this.email = user.email;
+        this.userName = user.userName;
+        this.displayName = user.displayName;
         this.friendsCount = 0; //TODO: implement friendsCount
     }
 
