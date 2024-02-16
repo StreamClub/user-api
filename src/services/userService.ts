@@ -1,6 +1,6 @@
 import { userRepository } from "@dal";
 import AppDependencies from "appDependencies";
-import { User } from "@entities";
+import { Profile, User } from "@entities";
 
 export class UserService {
     public constructor(dependencies: AppDependencies) {
@@ -10,7 +10,12 @@ export class UserService {
         return await userRepository.findOneByEmail(email);
     }
 
-    public async findById(id: number): Promise<User> {
-        return await userRepository.findOneById(id);
+    public async findById(id: number): Promise<Profile> {
+        const user = await userRepository.findOneById(id);
+        if (!user) {
+            return null;
+        }
+        delete user.password;
+        return new Profile(user);
     }
 }

@@ -46,5 +46,8 @@ describe('Get User Profile', () => {
         expect(user.id).toBe(1);
         expect(user.email).toBe('test@test.com');
         expect(user.userName).toBe('test1');
+        expect(user.displayName).toBe('test1');
+        expect(user.password).toBeUndefined();
+        expect(user.friendsCount).toBeDefined();
     });
 });

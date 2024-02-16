@@ -24,6 +24,7 @@ export class AuthService {
             }),
         );
         user.userName = generateUsername(userDto.email, user.id);
+        user.displayName = user.userName;
         await userRepository.update(Number(user.id), user);
         return tokenService.generateTokens(userDto.email, user.id);
     }
