@@ -16,12 +16,12 @@ export class App {
 
         app.use(cors());
         app.use(express.json());
-        registerRouters(app, this.dependencies);
-        app.use(exceptionToHttpError);
         if (production) {
             app.use(loggerMiddleware);
             cronjobService.start()
         };
+        registerRouters(app, this.dependencies);
+        app.use(exceptionToHttpError);
 
         return app;
     }
