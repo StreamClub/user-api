@@ -3,11 +3,11 @@ import { UnauthorizedException } from "@exceptions";
 import { tokenService } from "./tokenService";
 import { User, VerificationCode } from "@entities";
 import { userRepository, verificationCodeRepository } from "@dal";
-import { generate6digitNumber } from "@utils";
+import { generate6digitNumber, generateUsername } from "@utils";
 import { MailHandlerI } from "@handlers";
 import AppDependencies from "appDependencies";
 
-export class authService {
+export class AuthService {
     private mailHandler: MailHandlerI
     public constructor(dependencies: AppDependencies) {
         this.mailHandler = dependencies.mailHandler;
@@ -16,7 +16,6 @@ export class authService {
     public async register(
         userDto: RegisterUserDto,
     ): Promise<Credentials> {
-        //TODO: Crear un user name en base al mail del usuario. Agarrar el correo y pasarlo
         const hashedPassword = tokenService.hashPassword(userDto.password);
         const user = await userRepository.save(
             new User({
@@ -24,6 +23,9 @@ export class authService {
                 password: hashedPassword,
             }),
         );
+        user.userName = generateUsername(userDto.email, user.id);
+        user.displayName = user.userName;
+        await userRepository.update(Number(user.id), user);
         return tokenService.generateTokens(userDto.email, user.id);
     }
 

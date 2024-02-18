@@ -25,6 +25,7 @@ export function exceptionToHttpError(
     code = StatusCodes.INTERNAL_SERVER_ERROR;
     description = 'Internal server error';
     logger.error(`Unhandled error: ${error.message}
+      Code: ${code}
       Stack: ${error.stack}`);
   }
   res.status(code).json({
