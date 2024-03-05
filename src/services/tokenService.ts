@@ -2,22 +2,24 @@ import { config } from '@config';
 import { Credentials } from '@dtos';
 import { InvalidCodeException, UnauthorizedException } from '@exceptions';
 import { tokenRepository, verificationCodeRepository } from '@dal';
-import { DecodedToken, Token } from '@entities';
+import { DecodedRefreshToken, Token } from '@entities';
 import jwt from 'jsonwebtoken';
 import passwordHash from 'password-hash';
 import { isCodeValid } from '@utils';
 import { v1 } from 'uuid';
+import { userService } from '@services';
 
 
 class TokenService {
 
     public async generateJWT(receivedRefreshToken: string): Promise<Credentials> {
-        const refreshTokenData = this.decodeToken(receivedRefreshToken, config.refreshTokenKey);
+        const refreshTokenData = this.decodeRefreshToken(receivedRefreshToken, config.refreshTokenKey);
+        const user = await userService.findById(Number(refreshTokenData.userId));
         if (!refreshTokenData) {
             throw new UnauthorizedException('El token de refresco es inválido');
         }
         const storedRefreshToken = await tokenRepository.findOneByEmail(
-            refreshTokenData.email,
+            user.email,
         );
         if (!storedRefreshToken) {
             throw new UnauthorizedException('El token de refresco no existe');
@@ -25,13 +27,12 @@ class TokenService {
         if (storedRefreshToken.refreshToken !== receivedRefreshToken) {
             throw new UnauthorizedException('El token de refresco no pertenece con ninguno usuario');
         }
-        return await this.generateTokens(refreshTokenData.email, refreshTokenData.userId);
+        return await this.generateTokens(user.email, refreshTokenData.userId);
     }
 
-    private decodeToken(token: string, tokenKey: string): DecodedToken {
+    private decodeRefreshToken(token: string, tokenKey: string): DecodedRefreshToken {
         try {
             return jwt.verify(token, tokenKey) as {
-                email: string;
                 userId: string;
                 uuid: string;
             };
@@ -45,7 +46,7 @@ class TokenService {
             expiresIn: `${config.tokenLifeMinutes * 60}s`,
         });
         const refreshTokenValue = jwt.sign(
-            { email, userId, uuid: v1() },
+            { userId, uuid: v1() },
             config.refreshTokenKey,
             {
                 expiresIn: `${config.refreshTokenLifeMinutes * 60}s`,
