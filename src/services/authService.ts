@@ -1,11 +1,11 @@
 import { Credentials, LoginDto, RegisterUserDto, sendVerificationCodeDto } from "@dtos";
 import { UnauthorizedException } from "@exceptions";
-import { tokenService } from "./tokenService";
 import { User, VerificationCode } from "@entities";
 import { userRepository, verificationCodeRepository } from "@dal";
 import { generate6digitNumber, generateUsername } from "@utils";
 import { MailHandlerI } from "@handlers";
 import AppDependencies from "appDependencies";
+import { tokenService } from "./tokenService";
 
 export class AuthService {
     private mailHandler: MailHandlerI

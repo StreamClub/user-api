@@ -7,12 +7,11 @@ export class Token {
     }
 }
 
-export class DecodedToken {
-    public email!: string;
+export class DecodedRefreshToken {
     public userId!: string;
     public uuid!: string;
 
-    constructor(data: Partial<DecodedToken>) {
+    constructor(data: Partial<DecodedRefreshToken>) {
         Object.assign(this, data);
     }
 }
