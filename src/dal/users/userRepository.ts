@@ -8,8 +8,12 @@ class UserRepository {
     }
 
     public async update(id: number, fields: Partial<User>): Promise<User> {
-        await UserModel.update(fields, { where: { id } });
-        return
+        const user = await UserModel.findOne({ where: { id } });
+        if (!user) return null;
+        await user.update(fields);
+        return new User({
+            ...user.toJSON(),
+        });
     }
 
     public async findOneByEmail(email: string): Promise<User | null> {
