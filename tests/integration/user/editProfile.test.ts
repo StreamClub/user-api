@@ -12,6 +12,24 @@ const endpoint = '/users';
 describe('Get User Profile', () => {
     setupBeforeAndAfter();
 
+    const invalidBodyCases = [
+        [400, 'displayName', '', 'empty'],
+        [400, 'displayName', 'a'.repeat(256), 'too long'],
+    ]
+
+    invalidBodyCases.forEach(([status, field, value, description]) => {
+        it(`should return ${status} when provided with an ${description} ${field}`, async () => {
+            const testJwt = generateTestJwt(1, 'test@test.com');
+            const displayName = value;
+            const response = await server.patch(`${endpoint}/`)
+                .send({
+                    displayName
+                })
+                .set('Authorization', `Bearer ${testJwt}`);
+            expect(response.status).toBe(status);
+        });
+    });
+
     it('should return 404 when provided with an unknown userId', async () => {
         const testJwt = generateTestJwt(1, 'test@test.com');
         const newDisplayName = 'newName';
