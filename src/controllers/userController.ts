@@ -1,5 +1,5 @@
-import { Request } from '@models';
-import { GetProfileDto } from '@dtos';
+import { Request, Response } from '@models';
+import { EditUserDto, GetProfileDto } from '@dtos';
 import AppDependencies from 'appDependencies';
 import { Profile } from '@entities';
 import { NotFoundException } from '@exceptions';
@@ -17,6 +17,16 @@ export class UserController {
         if (!userProfile) {
             throw new NotFoundException('El usuario no existe');
         }
+        return userProfile;
+    }
+
+    public async update(
+        req: Request<EditUserDto>,
+        res: Response<any>,
+    ): Promise<Profile> {
+        const userId = Number(res.locals.userId);
+        const newUserData = req.body;
+        const userProfile = await userService.update(userId, newUserData);
         return userProfile;
     }
 }

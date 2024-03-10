@@ -8,7 +8,7 @@ import { Router } from "express";
 import { StatusCodes } from "http-status-codes";
 import { UserController } from "@controllers";
 import AppDependencies from "appDependencies";
-import { GetProfileSchema } from "@dtos";
+import { EditUserSchema, GetProfileSchema } from "@dtos";
 
 export function UserRouter(dependencies: AppDependencies) {
     const router = Router();
@@ -20,6 +20,16 @@ export function UserRouter(dependencies: AppDependencies) {
         validateSchema(GetProfileSchema, [FieldOptions.params]),
         handleRequest(
             (req) => userController.get(req),
+            StatusCodes.OK
+        )
+    );
+
+    router.patch(
+        "/",
+        loadUserContext,
+        validateSchema(EditUserSchema, [FieldOptions.body]),
+        handleRequest(
+            (req, res) => userController.update(req, res),
             StatusCodes.OK
         )
     );
