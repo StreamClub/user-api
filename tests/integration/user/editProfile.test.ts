@@ -38,7 +38,6 @@ describe('Get User Profile', () => {
                 displayName: newDisplayName
             })
             .set('Authorization', `Bearer ${testJwt}`);
-        console.log(response.body)
         expect(response.status).toBe(404);
 
     });

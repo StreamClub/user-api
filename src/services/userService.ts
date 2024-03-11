@@ -18,7 +18,6 @@ class UserService {
 
     public async update(userId: number, newUserData: Partial<User>): Promise<Profile> {
         const user = await userRepository.update(userId, newUserData);
-        console.log(user)
         if (!user) {
             throw new NotFoundException('El usuario no existe');
         }
