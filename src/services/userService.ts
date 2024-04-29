@@ -24,6 +24,16 @@ class UserService {
         delete user.password;
         return new Profile(user);
     }
+
+    public async getUserNames(userIds: number[]): Promise<any> {
+        const users = await userRepository.findManyByIds(userIds);
+        return users.map((user) => {
+            return {
+                id: user.id,
+                name: user.userName,
+            };
+        });
+    }
 }
 
 export const userService = new UserService();

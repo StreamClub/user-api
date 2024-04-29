@@ -1,5 +1,5 @@
 import { Request, Response } from '@models';
-import { EditUserDto, GetProfileDto } from '@dtos';
+import { EditUserDto, GetProfileDto, GetUserNamesDto } from '@dtos';
 import AppDependencies from 'appDependencies';
 import { Profile } from '@entities';
 import { NotFoundException } from '@exceptions';
@@ -28,5 +28,13 @@ export class UserController {
         const newUserData = req.body;
         const userProfile = await userService.update(userId, newUserData);
         return userProfile;
+    }
+
+    public async getUserNames(
+        req: Request<GetUserNamesDto>,
+    ): Promise<any> {
+        const query = (req.query.userIds as string).split(',');
+        const userIds = query.map((userId) => Number(userId));
+        return await userService.getUserNames(userIds);
     }
 }

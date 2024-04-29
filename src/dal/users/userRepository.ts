@@ -31,6 +31,11 @@ class UserRepository {
             ...user.toJSON(),
         });
     }
+
+    public async findManyByIds(ids: number[]): Promise<User[]> {
+        const users = await UserModel.findAll({ where: { id: ids } });
+        return users.map((user) => new User({ ...user.toJSON() }));
+    }
 }
 
 export const userRepository = new UserRepository();
