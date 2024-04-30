@@ -30,7 +30,7 @@ class UserService {
         return users.map((user) => {
             return {
                 id: user.id,
-                name: user.userName,
+                userName: user.userName,
             };
         });
     }
