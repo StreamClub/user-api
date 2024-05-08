@@ -5,7 +5,7 @@
 Para correr ejecutar:
 
 ```
-docker-compose up
+sudo docker compose up
 ```
 
 Para matarlo ejecutar el siguiente comando:
