@@ -14,6 +14,4 @@ export class Profile {
         this.displayName = user.displayName;
         this.friendsCount = 0; //TODO: implement friendsCount
     }
-
-
 }

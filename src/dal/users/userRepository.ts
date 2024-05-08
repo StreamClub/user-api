@@ -1,8 +1,23 @@
+import { Op } from 'sequelize';
 import { UserModel } from './userModel';
 import { User } from '@entities';
 
 
 class UserRepository {
+
+    public async search(query: string): Promise<User[]> {
+        const users = await UserModel.findAll({
+            where: {
+                [Op.or]: [
+                    { userName: { [Op.iLike]: `%${query}%` } },
+                    { displayName: { [Op.iLike]: `%${query}%` } },
+                    { email: { [Op.iLike]: `%${query}%` } },
+                ],
+            },
+        });
+        return users.map((user) => new User({ ...user.toJSON() }));
+    }
+
     public async save(user: User): Promise<User> {
         return (await UserModel.create({ ...user })).toJSON();
     }
