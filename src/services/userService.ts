@@ -4,12 +4,13 @@ import { NotFoundException } from "@exceptions";
 
 class UserService {
 
-    public async searchUser(query: string): Promise<Profile[]> {
+    public async searchUser(query: string): Promise<any> {
         const users = await userRepository.search(query);
-        return users.map((user) => {
+        const results = users.map((user) => {
             delete user.password;
             return new Profile(user);
         });
+        return { results };
     }
 
     public async findByEmail(email: string): Promise<User> {

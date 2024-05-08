@@ -14,6 +14,8 @@ class UserRepository {
                     { email: { [Op.iLike]: `%${query}%` } },
                 ],
             },
+            order: [['id', 'ASC']],
+            limit: 20,
         });
         return users.map((user) => new User({ ...user.toJSON() }));
     }
