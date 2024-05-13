@@ -1,8 +1,11 @@
 export class FriendRequest {
+    id!: number;
     senderId: number;
     receiverId: number;
 
     constructor(data: Partial<FriendRequest>) {
-        Object.assign(this, data);
+        this.id = data.id;
+        this.senderId = data.senderId;
+        this.receiverId = data.receiverId;
     }
 }
