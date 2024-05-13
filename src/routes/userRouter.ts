@@ -45,7 +45,7 @@ export function UserRouter(dependencies: AppDependencies) {
     router.post(
         "/:userId/friendRequest",
         loadUserContext,
-        validateSchema(GetProfileSchema, [FieldOptions.body]),
+        validateSchema(GetProfileSchema, [FieldOptions.params]),
         handleRequest(
             (req, res) => userController.sendFriendRequest(req, res),
             StatusCodes.OK

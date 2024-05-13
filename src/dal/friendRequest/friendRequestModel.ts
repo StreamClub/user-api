@@ -1,7 +1,6 @@
 import { DataTypes, Model, Sequelize } from "sequelize";
 import { UserModel } from "@dal";
 
-
 class FriendRequestModel extends Model {
     declare senderId: number;
     declare receiverId: number;
@@ -21,11 +20,11 @@ export function initFriendRequestModel(dbConnection: Sequelize) {
         sequelize: dbConnection,
         modelName: "FriendRequest"
     });
+    FriendRequestModel.belongsTo(UserModel, { foreignKey: 'senderId' });
+    FriendRequestModel.belongsTo(UserModel, { foreignKey: 'receiverId' });
 
     FriendRequestModel.sync();
 }
 
-export { FriendRequestModel }
 
-// FriendRequestModel.belongsTo(UserModel, { foreignKey: 'senderId' });
-// FriendRequestModel.belongsTo(UserModel, { foreignKey: 'receiverId' });
+export { FriendRequestModel };
