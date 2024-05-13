@@ -11,7 +11,7 @@ class FriendRequestRepository {
             return new FriendRequest(created);
         } catch (error) {
             if (error.name === 'SequelizeForeignKeyConstraintError') {
-                throw new NotFoundException('Invalid user ids');
+                throw new NotFoundException('El usuario no existe');
             }
         }
     }

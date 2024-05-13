@@ -2,7 +2,7 @@ import { Request, Response } from '@models';
 import { EditUserDto, GetProfileDto, GetUserNamesDto, SearchUserDto } from '@dtos';
 import AppDependencies from 'appDependencies';
 import { FriendRequest, Profile } from '@entities';
-import { NotFoundException } from '@exceptions';
+import { DomainException, NotFoundException } from '@exceptions';
 import { userService } from '@services';
 
 export class UserController {
@@ -52,8 +52,7 @@ export class UserController {
         const senderId = Number(res.locals.userId);
         const receiverId = Number(req.params.userId);
         if (senderId === receiverId) {
-            //TODO: change exception to bad request
-            throw new NotFoundException('No puedes enviarte una solicitud de amistad a ti mismo');
+            throw new DomainException('No puedes enviarte una solicitud de amistad a ti mismo');
         }
         return await userService.sendFriendRequest(senderId, receiverId);
     }
