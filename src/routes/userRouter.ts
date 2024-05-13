@@ -8,7 +8,10 @@ import { Router } from "express";
 import { StatusCodes } from "http-status-codes";
 import { UserController } from "@controllers";
 import AppDependencies from "appDependencies";
-import { EditUserSchema, GetProfileSchema, GetUserNamesSchema, SearchUserSchema } from "@dtos";
+import {
+    EditUserSchema, GetFriendRequestSchema, GetProfileSchema,
+    GetUserNamesSchema, SearchUserSchema
+} from "@dtos";
 
 export function UserRouter(dependencies: AppDependencies) {
     const router = Router();
@@ -54,7 +57,7 @@ export function UserRouter(dependencies: AppDependencies) {
     router.post(
         "/:userId/friendRequest",
         loadUserContext,
-        validateSchema(GetProfileSchema, [FieldOptions.params]),
+        validateSchema(GetFriendRequestSchema, [FieldOptions.params, FieldOptions.query]),
         handleRequest(
             (req, res) => userController.sendFriendRequest(req, res),
             StatusCodes.OK

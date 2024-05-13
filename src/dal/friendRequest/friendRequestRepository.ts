@@ -1,4 +1,4 @@
-import { FriendRequest } from "@entities";
+import { FriendRequest, Page } from "@entities";
 import { FriendRequestModel } from "./friendRequestModel";
 import { Op } from "sequelize";
 import { NotFoundException } from "@exceptions";
@@ -29,14 +29,17 @@ class FriendRequestRepository {
         return new FriendRequest(friendRequest);
     }
 
-    public async findRequestTo(userId: number): Promise<FriendRequest[]> {
-        const friendRequests = await FriendRequestModel.findAll({
+    public async findRequestTo(userId: number, pageNumber: number, pageSize: number): Promise<Page> {
+        const { rows, count } = await FriendRequestModel.findAndCountAll({
             where: {
                 receiverId: userId
-            }
+            },
+            offset: (pageNumber - 1) * pageSize,
+            limit: pageSize,
         });
 
-        return friendRequests.map((request) => new FriendRequest(request));
+        const requests = rows.map((request) => new FriendRequest(request));
+        return new Page(pageNumber, pageSize, count, requests);
     }
 }
 

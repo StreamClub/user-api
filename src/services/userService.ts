@@ -1,5 +1,5 @@
 import { userRepository, friendRequestRepository } from "@dal";
-import { FriendRequest, Profile, User } from "@entities";
+import { FriendRequest, Page, Profile, User } from "@entities";
 import { NotFoundException } from "@exceptions";
 
 class UserService {
@@ -54,8 +54,8 @@ class UserService {
         }
     }
 
-    public async getFriendRequest(userId: number): Promise<FriendRequest[]> {
-        return await friendRequestRepository.findRequestTo(userId);
+    public async getFriendRequest(userId: number, pageNumber: number, pageSize: number): Promise<Page> {
+        return await friendRequestRepository.findRequestTo(userId, pageNumber, pageSize);
     }
 }
 

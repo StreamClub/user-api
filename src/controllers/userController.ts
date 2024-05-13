@@ -1,7 +1,7 @@
 import { Request, Response } from '@models';
 import { EditUserDto, GetProfileDto, GetUserNamesDto, SearchUserDto } from '@dtos';
 import AppDependencies from 'appDependencies';
-import { FriendRequest, Profile } from '@entities';
+import { FriendRequest, Page, Profile } from '@entities';
 import { DomainException, NotFoundException } from '@exceptions';
 import { userService } from '@services';
 
@@ -56,10 +56,10 @@ export class UserController {
         return await userService.sendFriendRequest(senderId, receiverId);
     }
 
-    public async getFriendRequest(
-        req: Request, res: Response<any>,
-    ): Promise<FriendRequest[]> {
+    public async getFriendRequest(req: Request, res: Response<any>): Promise<Page> {
+        const pageSize = Number(req.query.pageSize) || 20;
+        const pageNumber = Number(req.query.page) || 1;
         const userId = Number(res.locals.userId);
-        return await userService.getFriendRequest(userId);
+        return await userService.getFriendRequest(userId, pageNumber, pageSize);
     }
 }
