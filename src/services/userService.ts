@@ -1,5 +1,5 @@
-import { userRepository } from "@dal";
-import { Profile, User } from "@entities";
+import { userRepository, friendRequestRepository } from "@dal";
+import { FriendRequest, Profile, User } from "@entities";
 import { NotFoundException } from "@exceptions";
 
 class UserService {
@@ -43,6 +43,10 @@ class UserService {
                 userName: user.userName,
             };
         });
+    }
+
+    public async sendFriendRequest(senderId: number, receiverId: number): Promise<FriendRequest> {
+        return await friendRequestRepository.save(senderId, receiverId);
     }
 }
 

@@ -1,7 +1,7 @@
 import { Request, Response } from '@models';
 import { EditUserDto, GetProfileDto, GetUserNamesDto, SearchUserDto } from '@dtos';
 import AppDependencies from 'appDependencies';
-import { Profile } from '@entities';
+import { FriendRequest, Profile } from '@entities';
 import { NotFoundException } from '@exceptions';
 import { userService } from '@services';
 
@@ -43,5 +43,18 @@ export class UserController {
         const query = (req.query.userIds as string).split(',');
         const userIds = query.map((userId) => Number(userId));
         return await userService.getUserNames(userIds);
+    }
+
+    public async sendFriendRequest(
+        req: Request<GetProfileDto>,
+        res: Response<any>,
+    ): Promise<FriendRequest> {
+        const senderId = Number(res.locals.userId);
+        const receiverId = Number(req.params.userId);
+        if (senderId === receiverId) {
+            //TODO: change exception to bad request
+            throw new NotFoundException('No puedes enviarte una solicitud de amistad a ti mismo');
+        }
+        return await userService.sendFriendRequest(senderId, receiverId);
     }
 }
