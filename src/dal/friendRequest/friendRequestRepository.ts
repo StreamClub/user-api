@@ -16,7 +16,13 @@ class FriendRequestRepository {
         }
     }
 
-    public async findOne(userId1: number, userId2: number): Promise<FriendRequest | null> {
+    public async findOne(id: number): Promise<FriendRequest | null> {
+        const friendRequest = await FriendRequestModel.findByPk(id);
+        if (!friendRequest) return null;
+        return new FriendRequest(friendRequest);
+    }
+
+    public async findOneWith(userId1: number, userId2: number): Promise<FriendRequest | null> {
         const friendRequest = await FriendRequestModel.findOne({
             where: {
                 [Op.or]: [
@@ -40,6 +46,10 @@ class FriendRequestRepository {
 
         const requests = rows.map((request) => new FriendRequest(request));
         return new Page(pageNumber, pageSize, count, requests);
+    }
+
+    public async delete(id: number): Promise<void> {
+        await FriendRequestModel.destroy({ where: { id } });
     }
 }
 

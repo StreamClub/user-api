@@ -46,7 +46,7 @@ class UserService {
     }
 
     public async sendFriendRequest(senderId: number, receiverId: number): Promise<FriendRequest> {
-        const friendRequest = await friendRequestRepository.findOne(senderId, receiverId);
+        const friendRequest = await friendRequestRepository.findOneWith(senderId, receiverId);
         if (friendRequest) {
             return friendRequest;
         } else {
@@ -56,6 +56,20 @@ class UserService {
 
     public async getFriendRequest(userId: number, pageNumber: number, pageSize: number): Promise<Page> {
         return await friendRequestRepository.findRequestTo(userId, pageNumber, pageSize);
+    }
+
+    public async deleteFriendRequest(userId: number, friendRequestId: number): Promise<void> {
+        console.log('userId', userId);
+        console.log('friendRequestId', friendRequestId);
+        const friendRequest = await friendRequestRepository.findOne(friendRequestId);
+        console.log('friendRequest', friendRequest)
+        console.log(friendRequest.senderId !== userId)
+        console.log(friendRequest.receiverId !== userId)
+
+        if (!friendRequest || (friendRequest.senderId !== userId && friendRequest.receiverId !== userId)) {
+            throw new NotFoundException('La solicitud de amistad no existe');
+        }
+        await friendRequestRepository.delete(friendRequestId);
     }
 }
 

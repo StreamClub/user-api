@@ -62,4 +62,12 @@ export class UserController {
         const userId = Number(res.locals.userId);
         return await userService.getFriendRequest(userId, pageNumber, pageSize);
     }
+
+    public async deleteFriendRequest(
+        req: Request, res: Response<any>,
+    ): Promise<void> {
+        const userId = Number(res.locals.userId);
+        const friendRequestId = Number(req.params.friendRequestId);
+        await userService.deleteFriendRequest(userId, friendRequestId);
+    }
 }

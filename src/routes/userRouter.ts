@@ -44,6 +44,15 @@ export function UserRouter(dependencies: AppDependencies) {
         )
     )
 
+    router.delete(
+        "/friendRequest/:friendRequestId",
+        loadUserContext,
+        handleRequest(
+            (req, res) => userController.deleteFriendRequest(req, res),
+            StatusCodes.OK
+        )
+    )
+
     router.get(
         "/:userId",
         loadUserContext,
