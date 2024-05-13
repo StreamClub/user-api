@@ -1,5 +1,5 @@
 import { Request, Response } from '@models';
-import { EditUserDto, GetProfileDto, GetUserNamesDto } from '@dtos';
+import { EditUserDto, GetProfileDto, GetUserNamesDto, SearchUserDto } from '@dtos';
 import AppDependencies from 'appDependencies';
 import { Profile } from '@entities';
 import { NotFoundException } from '@exceptions';
@@ -7,6 +7,13 @@ import { userService } from '@services';
 
 export class UserController {
     public constructor(dependencies: AppDependencies) {
+    }
+
+    public async searchUser(
+        req: Request<SearchUserDto>,
+    ): Promise<Profile[]> {
+        const query = req.query.query as string;
+        return await userService.searchUser(query);
     }
 
     public async get(
