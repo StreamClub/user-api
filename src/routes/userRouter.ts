@@ -8,11 +8,20 @@ import { Router } from "express";
 import { StatusCodes } from "http-status-codes";
 import { UserController } from "@controllers";
 import AppDependencies from "appDependencies";
-import { EditUserSchema, GetProfileSchema, GetUserNamesSchema } from "@dtos";
+import { EditUserSchema, GetProfileSchema, GetUserNamesSchema, SearchUserSchema } from "@dtos";
 
 export function UserRouter(dependencies: AppDependencies) {
     const router = Router();
     const userController = new UserController(dependencies);
+
+    router.get("/",
+        loadUserContext,
+        validateSchema(SearchUserSchema, [FieldOptions.query]),
+        handleRequest(
+            (req) => userController.searchUser(req),
+            StatusCodes.OK
+        )
+    )
 
     router.get(
         "/userNames",
