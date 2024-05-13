@@ -53,6 +53,10 @@ class UserService {
             return await friendRequestRepository.save(senderId, receiverId);
         }
     }
+
+    public async getFriendRequest(userId: number): Promise<FriendRequest[]> {
+        return await friendRequestRepository.findRequestTo(userId);
+    }
 }
 
 export const userService = new UserService();

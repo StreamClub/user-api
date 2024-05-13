@@ -46,8 +46,7 @@ export class UserController {
     }
 
     public async sendFriendRequest(
-        req: Request<GetProfileDto>,
-        res: Response<any>,
+        req: Request<GetProfileDto>, res: Response<any>,
     ): Promise<FriendRequest> {
         const senderId = Number(res.locals.userId);
         const receiverId = Number(req.params.userId);
@@ -55,5 +54,12 @@ export class UserController {
             throw new DomainException('No puedes enviarte una solicitud de amistad a ti mismo');
         }
         return await userService.sendFriendRequest(senderId, receiverId);
+    }
+
+    public async getFriendRequest(
+        req: Request, res: Response<any>,
+    ): Promise<FriendRequest[]> {
+        const userId = Number(res.locals.userId);
+        return await userService.getFriendRequest(userId);
     }
 }

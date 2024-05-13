@@ -28,6 +28,16 @@ class FriendRequestRepository {
         if (!friendRequest) return null;
         return new FriendRequest(friendRequest);
     }
+
+    public async findRequestTo(userId: number): Promise<FriendRequest[]> {
+        const friendRequests = await FriendRequestModel.findAll({
+            where: {
+                receiverId: userId
+            }
+        });
+
+        return friendRequests.map((request) => new FriendRequest(request));
+    }
 }
 
 export const friendRequestRepository = new FriendRequestRepository();
