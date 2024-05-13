@@ -46,7 +46,12 @@ class UserService {
     }
 
     public async sendFriendRequest(senderId: number, receiverId: number): Promise<FriendRequest> {
-        return await friendRequestRepository.save(senderId, receiverId);
+        const friendRequest = await friendRequestRepository.findOne(senderId, receiverId);
+        if (friendRequest) {
+            return friendRequest;
+        } else {
+            return await friendRequestRepository.save(senderId, receiverId);
+        }
     }
 }
 
