@@ -18,7 +18,7 @@ export function initFriendModel(dbConnection: Sequelize) {
         }
     }, {
         sequelize: dbConnection,
-        modelName: "FriendRequest"
+        modelName: "Friend"
     });
     FriendModel.belongsTo(UserModel, { foreignKey: 'userId1' });
     FriendModel.belongsTo(UserModel, { foreignKey: 'userId2' });

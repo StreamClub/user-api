@@ -9,6 +9,7 @@ import { StatusCodes } from "http-status-codes";
 import { UserController } from "@controllers";
 import AppDependencies from "appDependencies";
 import {
+    DeleteFriendRequestSchema,
     EditUserSchema, GetFriendRequestSchema, GetProfileSchema,
     GetUserNamesSchema, SearchUserSchema
 } from "@dtos";
@@ -47,6 +48,7 @@ export function UserRouter(dependencies: AppDependencies) {
     router.delete(
         "/friendRequest/:friendRequestId",
         loadUserContext,
+        validateSchema(DeleteFriendRequestSchema, [FieldOptions.params, FieldOptions.body]),
         handleRequest(
             (req, res) => userController.deleteFriendRequest(req, res),
             StatusCodes.OK

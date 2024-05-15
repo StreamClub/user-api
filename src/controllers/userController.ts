@@ -68,6 +68,7 @@ export class UserController {
     ): Promise<void> {
         const userId = Number(res.locals.userId);
         const friendRequestId = Number(req.params.friendRequestId);
-        await userService.deleteFriendRequest(userId, friendRequestId);
+        const action = req.body.action;
+        await userService.deleteFriendRequest(userId, friendRequestId, action);
     }
 }
