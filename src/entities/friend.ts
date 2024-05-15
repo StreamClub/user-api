@@ -1,11 +1,11 @@
 export class Friend {
     id!: number;
-    senderId: number;
-    receiverId: number;
+    userId1: number;
+    userId2: number;
 
     constructor(data: Partial<Friend>) {
         this.id = data.id;
-        this.senderId = data.senderId;
-        this.receiverId = data.receiverId;
+        this.userId1 = data.userId1;
+        this.userId2 = data.userId2;
     }
 }

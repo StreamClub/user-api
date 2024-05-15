@@ -2,8 +2,8 @@ import { DataTypes, Model, Sequelize } from "sequelize";
 import { UserModel } from "@dal";
 
 class FriendModel extends Model {
-    declare senderId: number;
-    declare receiverId: number;
+    declare userId1: number;
+    declare userId2: number;
 }
 
 export function initFriendModel(dbConnection: Sequelize) {
