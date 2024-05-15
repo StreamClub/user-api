@@ -59,13 +59,7 @@ class UserService {
     }
 
     public async deleteFriendRequest(userId: number, friendRequestId: number): Promise<void> {
-        console.log('userId', userId);
-        console.log('friendRequestId', friendRequestId);
         const friendRequest = await friendRequestRepository.findOne(friendRequestId);
-        console.log('friendRequest', friendRequest)
-        console.log(friendRequest.senderId !== userId)
-        console.log(friendRequest.receiverId !== userId)
-
         if (!friendRequest || (friendRequest.senderId !== userId && friendRequest.receiverId !== userId)) {
             throw new NotFoundException('La solicitud de amistad no existe');
         }
