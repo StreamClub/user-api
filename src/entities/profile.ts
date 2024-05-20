@@ -12,6 +12,5 @@ export class Profile {
         this.email = user.email;
         this.userName = user.userName;
         this.displayName = user.displayName;
-        this.friendsCount = 0; //TODO: implement friendsCount
     }
 }

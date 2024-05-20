@@ -9,8 +9,7 @@ import { StatusCodes } from "http-status-codes";
 import { UserController } from "@controllers";
 import AppDependencies from "appDependencies";
 import {
-    DeleteFriendRequestSchema,
-    EditUserSchema, GetFriendRequestSchema, GetProfileSchema,
+    EditUserSchema, GetProfileSchema,
     GetUserNamesSchema, SearchUserSchema
 } from "@dtos";
 
@@ -36,24 +35,6 @@ export function UserRouter(dependencies: AppDependencies) {
         )
     )
 
-    router.get(
-        "/friendRequest",
-        loadUserContext,
-        handleRequest(
-            (req, res) => userController.getFriendRequest(req, res),
-            StatusCodes.OK
-        )
-    )
-
-    router.delete(
-        "/friendRequest/:friendRequestId",
-        loadUserContext,
-        validateSchema(DeleteFriendRequestSchema, [FieldOptions.params, FieldOptions.body]),
-        handleRequest(
-            (req, res) => userController.deleteFriendRequest(req, res),
-            StatusCodes.OK
-        )
-    )
 
     router.get(
         "/:userId",
@@ -64,16 +45,6 @@ export function UserRouter(dependencies: AppDependencies) {
             StatusCodes.OK
         )
     );
-
-    router.post(
-        "/:userId/friendRequest",
-        loadUserContext,
-        validateSchema(GetFriendRequestSchema, [FieldOptions.params, FieldOptions.query]),
-        handleRequest(
-            (req, res) => userController.sendFriendRequest(req, res),
-            StatusCodes.OK
-        )
-    )
 
     router.patch(
         "/",
