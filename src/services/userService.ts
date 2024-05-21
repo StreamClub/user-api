@@ -1,4 +1,4 @@
-import { userRepository } from "@dal";
+import { userRepository, friendRepository } from "@dal";
 import { Profile, User } from "@entities";
 import { NotFoundException } from "@exceptions";
 
@@ -6,10 +6,9 @@ class UserService {
 
     public async searchUser(query: string): Promise<any> {
         const users = await userRepository.search(query);
-        const results = users.map((user) => {
-            delete user.password;
-            return new Profile(user);
-        });
+        const results = await Promise.all(users.map(async (user) => {
+            return await this.profileOf(user);
+        }));
         return { results };
     }
 
@@ -22,8 +21,13 @@ class UserService {
         if (!user) {
             return null;
         }
-        delete user.password;
-        return new Profile(user);
+        return await this.profileOf(user);
+    }
+
+    private async profileOf(user: User): Promise<Profile> {
+        const profile = new Profile(user);
+        profile.friendsCount = await friendRepository.countFriendsOf(Number(user.id));
+        return profile;
     }
 
     public async update(userId: number, newUserData: Partial<User>): Promise<Profile> {

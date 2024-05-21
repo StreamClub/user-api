@@ -8,7 +8,10 @@ import { Router } from "express";
 import { StatusCodes } from "http-status-codes";
 import { UserController } from "@controllers";
 import AppDependencies from "appDependencies";
-import { EditUserSchema, GetProfileSchema, GetUserNamesSchema, SearchUserSchema } from "@dtos";
+import {
+    EditUserSchema, GetProfileSchema,
+    GetUserNamesSchema, SearchUserSchema
+} from "@dtos";
 
 export function UserRouter(dependencies: AppDependencies) {
     const router = Router();
@@ -31,6 +34,7 @@ export function UserRouter(dependencies: AppDependencies) {
             StatusCodes.OK
         )
     )
+
 
     router.get(
         "/:userId",
