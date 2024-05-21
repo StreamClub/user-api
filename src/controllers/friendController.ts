@@ -40,12 +40,12 @@ export class FriendController {
         const userId = Number(res.locals.userId);
         const friendRequestId = Number(req.params.requestId);
         const action = req.body.action;
-        await friendService.deleteFriendRequest(userId, friendRequestId, action);
+        return await friendService.deleteFriendRequest(userId, friendRequestId, action);
     }
 
     public async deleteFriend(req: Request, res: Response<any>): Promise<void> {
         const userId = Number(res.locals.userId);
         const friendId = Number(req.params.userId);
-        await friendService.deleteFriend(userId, friendId);
+        return await friendService.deleteFriend(userId, friendId);
     }
 }

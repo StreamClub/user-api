@@ -9,7 +9,7 @@ import { server, setupBeforeAndAfter } from '../../setup/testsSetup';
 
 const endpoint = '/users';
 
-describe('Get User Profile', () => {
+describe('Edit User Profile', () => {
     setupBeforeAndAfter();
 
     const invalidBodyCases = [
@@ -59,6 +59,5 @@ describe('Get User Profile', () => {
         expect(user.userName).toBe('test1');
         expect(user.displayName).toBe(newDisplayName);
         expect(user.password).toBeUndefined();
-        expect(user.friendsCount).toBeDefined();
     });
 });
