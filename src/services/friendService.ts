@@ -5,6 +5,18 @@ import { DomainException, NotFoundException } from "@exceptions";
 
 class FriendService {
 
+    public async getFriendList(userId: number, pageNumber: number, pageSize: number): Promise<Page> {
+        return await friendRepository.findFriendList(userId, pageNumber, pageSize);
+    }
+
+    public async deleteFriend(userId: number, friendId: number): Promise<void> {
+        const friend = await friendRepository.findOneWith(userId, friendId);
+        if (!friend) {
+            throw new NotFoundException('El usuario no es tu amigo');
+        }
+        await friendRepository.delete(friend.id);
+    }
+
     public async sendFriendRequest(senderId: number, receiverId: number): Promise<FriendRequest> {
         const friend = await friendRepository.findOneWith(senderId, receiverId);
         if (friend) {

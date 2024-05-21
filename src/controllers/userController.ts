@@ -1,8 +1,8 @@
 import { Request, Response } from '@models';
 import { EditUserDto, GetProfileDto, GetUserNamesDto, SearchUserDto } from '@dtos';
 import AppDependencies from 'appDependencies';
-import { FriendRequest, Page, Profile } from '@entities';
-import { DomainException, NotFoundException } from '@exceptions';
+import { Profile } from '@entities';
+import { NotFoundException } from '@exceptions';
 import { userService } from '@services';
 
 export class UserController {
@@ -43,32 +43,5 @@ export class UserController {
         const query = (req.query.userIds as string).split(',');
         const userIds = query.map((userId) => Number(userId));
         return await userService.getUserNames(userIds);
-    }
-
-    public async sendFriendRequest(
-        req: Request<GetProfileDto>, res: Response<any>,
-    ): Promise<FriendRequest> {
-        const senderId = Number(res.locals.userId);
-        const receiverId = Number(req.params.userId);
-        if (senderId === receiverId) {
-            throw new DomainException('No puedes enviarte una solicitud de amistad a ti mismo');
-        }
-        return await userService.sendFriendRequest(senderId, receiverId);
-    }
-
-    public async getFriendRequest(req: Request, res: Response<any>): Promise<Page> {
-        const pageSize = Number(req.query.pageSize) || 20;
-        const pageNumber = Number(req.query.page) || 1;
-        const userId = Number(res.locals.userId);
-        return await userService.getFriendRequest(userId, pageNumber, pageSize);
-    }
-
-    public async deleteFriendRequest(
-        req: Request, res: Response<any>,
-    ): Promise<void> {
-        const userId = Number(res.locals.userId);
-        const friendRequestId = Number(req.params.friendRequestId);
-        const action = req.body.action;
-        await userService.deleteFriendRequest(userId, friendRequestId, action);
     }
 }

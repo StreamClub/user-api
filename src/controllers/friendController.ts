@@ -9,6 +9,13 @@ export class FriendController {
     public constructor(dependencies: AppDependencies) {
     }
 
+    public async getFriendList(req: Request, res: Response<any>): Promise<Page> {
+        const pageSize = Number(req.query.pageSize) || 20;
+        const pageNumber = Number(req.query.page) || 1;
+        const userId = Number(res.locals.userId);
+        return await friendService.getFriendList(userId, pageNumber, pageSize);
+    }
+
     public async sendFriendRequest(
         req: Request<GetProfileDto>, res: Response<any>,
     ): Promise<FriendRequest> {
@@ -31,8 +38,14 @@ export class FriendController {
         req: Request, res: Response<any>,
     ): Promise<void> {
         const userId = Number(res.locals.userId);
-        const friendRequestId = Number(req.params.friendRequestId);
+        const friendRequestId = Number(req.params.requestId);
         const action = req.body.action;
         await friendService.deleteFriendRequest(userId, friendRequestId, action);
+    }
+
+    public async deleteFriend(req: Request, res: Response<any>): Promise<void> {
+        const userId = Number(res.locals.userId);
+        const friendId = Number(req.params.userId);
+        await friendService.deleteFriend(userId, friendId);
     }
 }

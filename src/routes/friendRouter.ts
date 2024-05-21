@@ -11,6 +11,8 @@ import AppDependencies from "appDependencies";
 import {
     DeleteFriendRequestSchema,
     GetFriendRequestSchema,
+    GetFriendsSchema,
+    GetProfileSchema,
 } from "@dtos";
 
 export function FriendRouter(dependencies: AppDependencies) {
@@ -18,7 +20,27 @@ export function FriendRouter(dependencies: AppDependencies) {
     const friendController = new FriendController(dependencies);
 
     router.get(
-        "/request",
+        "/",
+        loadUserContext,
+        validateSchema(GetFriendsSchema, [FieldOptions.query]),
+        handleRequest(
+            (req, res) => friendController.getFriendList(req, res),
+            StatusCodes.OK
+        )
+    )
+
+    router.delete(
+        "/:userId",
+        loadUserContext,
+        validateSchema(GetProfileSchema, [FieldOptions.params]),
+        handleRequest(
+            (req, res) => friendController.deleteFriend(req, res),
+            StatusCodes.OK
+        )
+    )
+
+    router.get(
+        "/requests",
         loadUserContext,
         handleRequest(
             (req, res) => friendController.getFriendRequest(req, res),
@@ -27,7 +49,7 @@ export function FriendRouter(dependencies: AppDependencies) {
     )
 
     router.delete(
-        "/request/:friendRequestId",
+        "/requests/:requestId",
         loadUserContext,
         validateSchema(DeleteFriendRequestSchema, [FieldOptions.params, FieldOptions.body]),
         handleRequest(
@@ -37,7 +59,7 @@ export function FriendRouter(dependencies: AppDependencies) {
     )
 
     router.post(
-        "request/:userId",
+        "/requests/:userId",
         loadUserContext,
         validateSchema(GetFriendRequestSchema, [FieldOptions.params, FieldOptions.query]),
         handleRequest(
