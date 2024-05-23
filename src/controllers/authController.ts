@@ -20,10 +20,12 @@ export class AuthController {
     return await this.authService.register(req.body);
   }
 
-  public async login(
-    req: Request<LoginDto>,
-  ): Promise<Credentials> {
+  public async login(req: Request<LoginDto>): Promise<Credentials> {
     return await this.authService.login(req.body);
+  }
+
+  public async googleLogin(req: Request<LoginDto>): Promise<Credentials> {
+    return await this.authService.googleLogin(req.body);
   }
 
   public async refreshCredentials(req: Request<RefreshCredentialsDto>): Promise<Credentials> {

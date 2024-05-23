@@ -35,6 +35,15 @@ export function AuthRouter(dependencies: AppDependencies) {
     );
 
     router.post(
+        "/login/google",
+        validateSchema(LoginSchema, [FieldOptions.body]),
+        handleRequest(
+            (req) => authController.googleLogin(req),
+            StatusCodes.OK
+        )
+    )
+
+    router.post(
         "/refreshCredentials",
         validateSchema(RefreshCredentialsSchema, [FieldOptions.body]),
         handleRequest(
