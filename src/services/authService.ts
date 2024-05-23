@@ -29,9 +29,7 @@ export class AuthService {
         return tokenService.generateTokens(userDto.email, user.id);
     }
 
-    public async login(
-        userDto: LoginDto,
-    ): Promise<Credentials> {
+    public async login(userDto: LoginDto): Promise<Credentials> {
         const user = await userRepository.findOneByEmail(userDto.email);
         const isValidLogin =
             user && tokenService.isValidPassword(userDto.password, user.password);
@@ -39,6 +37,18 @@ export class AuthService {
             throw new UnauthorizedException('Las credenciales ingresadas son incorrectas.');
         }
         return tokenService.generateTokens(userDto.email, user.id);
+    }
+
+    public async googleLogin(userDto: LoginDto): Promise<Credentials> {
+        const user = await userRepository.findOneByEmail(userDto.email);
+        if (!user) {
+            const registerUserDto = {
+                email: userDto.email,
+                password: userDto.password, verificationCode: generate6digitNumber()
+            };
+            return this.register(registerUserDto);
+        }
+        return this.login(userDto);
     }
 
     public async sendVerificationCode(dto: sendVerificationCodeDto): Promise<void> {
