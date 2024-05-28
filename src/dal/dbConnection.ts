@@ -1,4 +1,7 @@
-import { initFriendModel, initFriendRequestModel, initTokenModel, initUserModel, initVerificationCodeModel } from "@dal";
+import {
+    initFriendModel, initFriendRequestModel, initPointModel, initTokenModel,
+    initUserModel, initVerificationCodeModel
+} from "@dal";
 import { logger } from "@utils";
 import { Sequelize } from "sequelize";
 
@@ -17,5 +20,6 @@ export class Db {
         initFriendRequestModel(this.dbConnection);
         initVerificationCodeModel(this.dbConnection);
         initFriendModel(this.dbConnection);
+        initPointModel(this.dbConnection);
     }
 }
