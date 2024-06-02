@@ -15,9 +15,8 @@ class LevelRepository {
             { where: { threshold: { [Op.lte]: points } }, order: [['threshold', 'DESC']] });
         const nextLevel = await LevelModel.findOne(
             { where: { threshold: { [Op.gt]: points } }, order: [['threshold', 'ASC']] });
-        //TODO: manage case when user has reached the max level
         const userLevel = new UserLevel({ name: level.name, points: points });
-        userLevel.setNextLevelThreshold(nextLevel.threshold);
+        userLevel.setNextLevelThreshold(nextLevel?.threshold || 0);
         return userLevel;
     }
 }
