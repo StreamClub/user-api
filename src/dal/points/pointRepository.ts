@@ -14,6 +14,11 @@ class PointRepository {
         }
     }
 
+    public async getUserPoints(userId: number): Promise<number> {
+        const point = await PointModel.findOne({ where: { userId } });
+        return point ? point.amount : 0;
+    }
+
 }
 
 export const pointRepository = new PointRepository();
