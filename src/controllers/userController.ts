@@ -3,7 +3,7 @@ import { EditUserDto, GetProfileDto, GetUserNamesDto, SearchUserDto } from '@dto
 import AppDependencies from 'appDependencies';
 import { Profile } from '@entities';
 import { NotFoundException } from '@exceptions';
-import { userService } from '@services';
+import { pointService, userService } from '@services';
 
 export class UserController {
     public constructor(dependencies: AppDependencies) {
@@ -24,6 +24,8 @@ export class UserController {
         if (!userProfile) {
             throw new NotFoundException('El usuario no existe');
         }
+        const level = await pointService.getUserLevel(userId);
+        userProfile.setLevel(level);
         return userProfile;
     }
 

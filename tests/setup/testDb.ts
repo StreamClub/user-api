@@ -1,3 +1,4 @@
+import { levelRepository } from "@dal";
 import { Db } from "../../src/dal/dbConnection";
 export class TestDb extends Db {
 
@@ -7,6 +8,7 @@ export class TestDb extends Db {
 
     public async initTestDb(): Promise<void> {
         await this.dbConnection.sync({ force: true });
+        await levelRepository.initLevels();
     }
 
     public async clearDatabase(): Promise<void> {
