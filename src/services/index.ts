@@ -3,3 +3,4 @@ export * from "./tokenService";
 export * from "./cronjobService";
 export * from "./userService";
 export * from "./friendService";
+export * from "./pointService";
