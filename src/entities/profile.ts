@@ -1,4 +1,4 @@
-import { User, UserLevel } from "@entities";
+import { Friend, FriendRequest, User, UserLevel } from "@entities";
 
 export class Profile {
     public id!: string;
@@ -7,6 +7,8 @@ export class Profile {
     public displayName!: string;
     public friendsCount!: number;
     public level!: UserLevel;
+    public friendRequest: FriendRequest | null = null;
+    public friendship: Friend | null = null;
 
     constructor(user: User) {
         this.id = user.id;
@@ -17,5 +19,10 @@ export class Profile {
 
     public setLevel(userLevel: UserLevel): void {
         this.level = userLevel;
+    }
+
+    public setFriendStatus(friendRequest: FriendRequest, friendship: Friend): void {
+        this.friendRequest = friendRequest;
+        this.friendship = friendship;
     }
 }

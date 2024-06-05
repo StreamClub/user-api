@@ -30,6 +30,7 @@ bower_components
 .idea
 *.iml
 *vscode
+.vscode
 # OS metadata
 .DS_Store
 Thumbs.db

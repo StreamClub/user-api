@@ -41,7 +41,7 @@ export function UserRouter(dependencies: AppDependencies) {
         loadUserContext,
         validateSchema(GetProfileSchema, [FieldOptions.params]),
         handleRequest(
-            (req) => userController.get(req),
+            (req, res) => userController.get(req, res),
             StatusCodes.OK
         )
     );
