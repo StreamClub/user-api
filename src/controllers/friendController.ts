@@ -31,7 +31,7 @@ export class FriendController {
         const pageSize = Number(req.query.pageSize) || 20;
         const pageNumber = Number(req.query.page) || 1;
         const userId = Number(res.locals.userId);
-        return await friendService.getFriendRequest(userId, pageNumber, pageSize);
+        return await friendService.getRequestTo(userId, pageNumber, pageSize);
     }
 
     public async deleteFriendRequest(
