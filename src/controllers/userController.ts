@@ -3,7 +3,7 @@ import { EditUserDto, GetProfileDto, GetUserNamesDto, SearchUserDto } from '@dto
 import AppDependencies from 'appDependencies';
 import { Profile } from '@entities';
 import { NotFoundException } from '@exceptions';
-import { pointService, userService } from '@services';
+import { friendService, pointService, userService } from '@services';
 
 export class UserController {
     public constructor(dependencies: AppDependencies) {
@@ -17,8 +17,9 @@ export class UserController {
     }
 
     public async get(
-        req: Request<GetProfileDto>,
+        req: Request<GetProfileDto>, res: Response<any>,
     ): Promise<Profile> {
+        const callerId = Number(res.locals.userId);
         const userId = Number(req.params.userId);
         const userProfile = await userService.findById(userId);
         if (!userProfile) {
@@ -26,6 +27,9 @@ export class UserController {
         }
         const level = await pointService.getUserLevel(userId);
         userProfile.setLevel(level);
+        const friendRequest = await friendService.getFriendRequest(callerId, userId);
+        const friendship = await friendService.getFriendship(callerId, userId);
+        userProfile.setFriendStatus(friendRequest, friendship);
         return userProfile;
     }
 

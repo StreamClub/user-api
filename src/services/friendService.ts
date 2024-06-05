@@ -1,9 +1,14 @@
 import { FriendRequestActions } from "@config";
 import { friendRequestRepository, friendRepository } from "@dal";
-import { FriendRequest, Page } from "@entities";
+import { Friend, FriendRequest, Page } from "@entities";
 import { DomainException, NotFoundException } from "@exceptions";
 
 class FriendService {
+
+
+    public async getFriendship(userId1: number, userId2: number): Promise<Friend> {
+        return await friendRepository.findOneWith(userId1, userId2);
+    }
 
     public async getFriendList(userId: number, pageNumber: number, pageSize: number): Promise<Page> {
         return await friendRepository.findFriendList(userId, pageNumber, pageSize);
@@ -30,7 +35,11 @@ class FriendService {
         }
     }
 
-    public async getFriendRequest(userId: number, pageNumber: number, pageSize: number): Promise<Page> {
+    public async getFriendRequest(userId1: number, userId2: number): Promise<FriendRequest> {
+        return await friendRequestRepository.findOneWith(userId1, userId2);
+    }
+
+    public async getRequestTo(userId: number, pageNumber: number, pageSize: number): Promise<Page> {
         return await friendRequestRepository.findRequestTo(userId, pageNumber, pageSize);
     }
 
