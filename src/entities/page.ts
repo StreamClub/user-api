@@ -11,4 +11,8 @@ export class Page {
         this.results = results;
     }
 
+    public setResults(results: any[]): void {
+        this.results = results;
+    }
+
 }

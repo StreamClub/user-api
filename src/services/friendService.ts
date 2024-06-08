@@ -1,6 +1,6 @@
 import { FriendRequestActions } from "@config";
-import { friendRequestRepository, friendRepository } from "@dal";
-import { Friend, FriendRequest, Page } from "@entities";
+import { friendRequestRepository, friendRepository, userRepository } from "@dal";
+import { Friend, FriendRequest, Page, Profile } from "@entities";
 import { DomainException, NotFoundException } from "@exceptions";
 
 class FriendService {
@@ -11,7 +11,24 @@ class FriendService {
     }
 
     public async getFriendList(userId: number, pageNumber: number, pageSize: number): Promise<Page> {
-        return await friendRepository.findFriendList(userId, pageNumber, pageSize);
+        const friendships = await friendRepository.findFriendList(userId, pageNumber, pageSize);
+        const friendsIds: number[] = friendships.results.map(friend =>
+            friend.userId1 == userId ? friend.userId2 : friend.userId1);
+        const friends = await userRepository.findManyByIds(friendsIds);
+        const result = friendships.results.map(friendship => {
+            const friend = friends.find(f => f.id === (friendship.userId1 == userId ? friendship.userId2 : friendship.userId1));
+            const profile = new Profile(friend);
+            const result = {
+                ...profile,
+                userId: friend.id,
+                id: friendship.id,
+            };
+            delete result.friendRequest;
+            delete result.friendship;
+            return result;
+        })
+        friendships.setResults(result);
+        return friendships;
     }
 
     public async deleteFriend(userId: number, friendId: number): Promise<void> {
