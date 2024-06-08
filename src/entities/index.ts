@@ -6,3 +6,5 @@ export * from './friendRequest';
 export * from './page';
 export * from './userLevel';
 export * from './friend';
+export * from './friendship';
+export * from './friendRequestInfo';

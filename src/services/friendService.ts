@@ -1,6 +1,6 @@
 import { FriendRequestActions } from "@config";
 import { friendRequestRepository, friendRepository, userRepository } from "@dal";
-import { Friend, FriendRequest, Page, Profile } from "@entities";
+import { Friend, FriendRequest, FriendRequestInfo, Friendship, Page, Profile } from "@entities";
 import { DomainException, NotFoundException } from "@exceptions";
 
 class FriendService {
@@ -17,15 +17,7 @@ class FriendService {
         const friends = await userRepository.findManyByIds(friendsIds);
         const result = friendships.results.map(friendship => {
             const friend = friends.find(f => f.id === (friendship.userId1 == userId ? friendship.userId2 : friendship.userId1));
-            const profile = new Profile(friend);
-            const result = {
-                ...profile,
-                userId: friend.id,
-                id: friendship.id,
-            };
-            delete result.friendRequest;
-            delete result.friendship;
-            return result;
+            return new Friendship(friendship.id, friend);
         })
         friendships.setResults(result);
         return friendships;
@@ -57,7 +49,15 @@ class FriendService {
     }
 
     public async getRequestTo(userId: number, pageNumber: number, pageSize: number): Promise<Page> {
-        return await friendRequestRepository.findRequestTo(userId, pageNumber, pageSize);
+        const friendRequests = await friendRequestRepository.findRequestTo(userId, pageNumber, pageSize);
+        const requestersIds: number[] = friendRequests.results.map(request => request.senderId);
+        const senders = await userRepository.findManyByIds(requestersIds);
+        const result = friendRequests.results.map(request => {
+            const sender = senders.find(f => f.id === request.senderId);
+            return new FriendRequestInfo(request.id, sender);
+        })
+        friendRequests.setResults(result);
+        return friendRequests;
     }
 
     public async deleteFriendRequest(userId: number, friendRequestId: number, action: string): Promise<void> {
