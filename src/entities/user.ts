@@ -4,6 +4,7 @@ export class User {
     public userName!: string;
     public displayName!: string;
     public password!: string;
+    public photoId!: number;
 
     constructor(data: Partial<User>) {
         Object.assign(this, data);

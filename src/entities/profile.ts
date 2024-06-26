@@ -9,12 +9,14 @@ export class Profile {
     public level!: UserLevel;
     public friendRequest: FriendRequest | null = null;
     public friendship: Friend | null = null;
+    public photoId: number;
 
     constructor(user: User) {
         this.id = user.id;
         this.email = user.email;
         this.userName = user.userName;
         this.displayName = user.displayName;
+        this.photoId = user.photoId;
     }
 
     public setLevel(userLevel: UserLevel): void {
