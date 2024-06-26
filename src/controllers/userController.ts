@@ -39,6 +39,10 @@ export class UserController {
     ): Promise<Profile> {
         const userId = Number(res.locals.userId);
         const newUserData = req.body;
+        if (newUserData.photoId) {
+            const level = await pointService.getUserLevel(userId);
+            await photoService.failIfPhotoIsNotAvailable(newUserData.photoId, level.levelNumber);
+        }
         const userProfile = await userService.update(userId, newUserData);
         return userProfile;
     }
@@ -54,7 +58,6 @@ export class UserController {
     public async getPhotos(req: Request<any>, res: Response<any>): Promise<any> {
         const userId = Number(res.locals.userId);
         const level = await pointService.getUserLevel(userId)
-        console.log(level.levelNumber)
         return await photoService.getPhotos(level.levelNumber)
     }
 }

@@ -1,4 +1,5 @@
 import { photoRepository } from "@dal";
+import { DomainException } from "@exceptions";
 
 class PhotoService {
     public async getPhotos(levelNumber: number) {
@@ -10,6 +11,13 @@ class PhotoService {
                 available: photoLevel <= levelNumber,
             }
         });
+    }
+
+    public async failIfPhotoIsNotAvailable(photoId: number, levelNumber: number) {
+        const photoLevel = this.getPhotoLevel(photoId);
+        if (photoLevel > levelNumber) {
+            throw new DomainException('La foto no está disponible para el nivel actual');
+        }
     }
 
     private getPhotoLevel(photoId: number) {
