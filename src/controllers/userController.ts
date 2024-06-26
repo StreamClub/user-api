@@ -3,7 +3,7 @@ import { EditUserDto, GetProfileDto, GetUserNamesDto, SearchUserDto } from '@dto
 import AppDependencies from 'appDependencies';
 import { Profile } from '@entities';
 import { NotFoundException } from '@exceptions';
-import { friendService, pointService, userService } from '@services';
+import { friendService, photoService, pointService, userService } from '@services';
 
 export class UserController {
     public constructor(dependencies: AppDependencies) {
@@ -55,5 +55,6 @@ export class UserController {
         const userId = Number(res.locals.userId);
         const level = await pointService.getUserLevel(userId)
         console.log(level.levelNumber)
+        return await photoService.getPhotos(level.levelNumber)
     }
 }

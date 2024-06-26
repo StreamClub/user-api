@@ -7,6 +7,11 @@ class PhotoRepository {
         await PhotoModel.truncate();
         await PhotoModel.bulkCreate(PHOTOS);
     }
+
+    public async getPhotos(): Promise<PhotoModel[]> {
+        return PhotoModel.findAll();
+    }
+
 }
 
 export const photoRepository = new PhotoRepository();

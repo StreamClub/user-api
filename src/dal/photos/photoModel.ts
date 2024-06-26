@@ -1,7 +1,7 @@
 import { DataTypes, Model, Sequelize } from "sequelize";
 
 class PhotoModel extends Model {
-    declare photoId: string;
+    declare photoId: number;
 }
 
 export function initPhotoModel(dbConnection: Sequelize) {

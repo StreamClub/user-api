@@ -1,3 +1,7 @@
+// IMPORTANT: 
+// photoId tens digit represents the level of the photo, 
+// to change this change getPhotoLevel method in photoService.ts
+
 export const PHOTOS = [
     { photoId: 11 }, { photoId: 12 }, { photoId: 13 }, // LEVEL 1
     { photoId: 21 }, { photoId: 22 }, { photoId: 23 }, // LEVEL 2
