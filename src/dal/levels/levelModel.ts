@@ -3,6 +3,7 @@ import { DataTypes, Model, Sequelize } from "sequelize";
 class LevelModel extends Model {
     declare threshold: number;
     declare name: string;
+    declare levelNumber: number;
 }
 
 export function initLevelModel(dbConnection: Sequelize) {
@@ -16,6 +17,11 @@ export function initLevelModel(dbConnection: Sequelize) {
             type: DataTypes.INTEGER,
             allowNull: false,
         },
+        levelNumber: {
+            type: DataTypes.INTEGER,
+            unique: true,
+            allowNull: false,
+        }
     }, {
         sequelize: dbConnection,
         modelName: "Level"

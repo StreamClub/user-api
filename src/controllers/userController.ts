@@ -50,4 +50,10 @@ export class UserController {
         const userIds = query.map((userId) => Number(userId));
         return await userService.getUserNames(userIds);
     }
+
+    public async getPhotos(req: Request<any>, res: Response<any>): Promise<any> {
+        const userId = Number(res.locals.userId);
+        const level = await pointService.getUserLevel(userId)
+        console.log(level.levelNumber)
+    }
 }
