@@ -4,3 +4,5 @@ export const PHOTOS = [
     { photoId: 31 }, { photoId: 32 }, { photoId: 33 }, // LEVEL 3
     { photoId: 41 }, { photoId: 42 }, { photoId: 43 }, // LEVEL 4
 ]
+
+export const PHOTOS_IDS = PHOTOS.map(photo => photo.photoId);
