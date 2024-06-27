@@ -1,7 +1,8 @@
 import {
-    initFriendModel, initFriendRequestModel, initLevelModel, initPointModel, initTokenModel,
+    initFriendModel, initFriendRequestModel, initLevelModel, initPhotoModel, initPointModel, initTokenModel,
     initUserModel, initVerificationCodeModel,
-    levelRepository
+    levelRepository,
+    photoRepository
 } from "@dal";
 import { logger } from "@utils";
 import { Sequelize } from "sequelize";
@@ -21,8 +22,10 @@ export class Db {
                 initFriendModel(this.dbConnection);
                 initPointModel(this.dbConnection);
                 initLevelModel(this.dbConnection);
+                initPhotoModel(this.dbConnection);
                 await this.dbConnection.sync();
                 await levelRepository.initLevels();
+                await photoRepository.initPhotos();
             })
             .catch(err => {
                 logger.error(`Unable to connect to the database: ${err.message}`);
