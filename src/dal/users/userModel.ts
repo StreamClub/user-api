@@ -6,6 +6,7 @@ class UserModel extends Model {
   declare userName: string;
   declare displayName: string;
   declare password: string;
+  declare photoId: string;
 }
 
 export function initUserModel(dbConnection: Sequelize) {
@@ -28,7 +29,12 @@ export function initUserModel(dbConnection: Sequelize) {
     password: {
       type: DataTypes.STRING,
       allowNull: false,
-    }
+    },
+    photoId: {
+      type: DataTypes.INTEGER,
+      defaultValue: 11,
+      allowNull: false,
+    },
   }, {
     sequelize: dbConnection,
     modelName: "User"

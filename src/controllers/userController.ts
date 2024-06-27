@@ -3,7 +3,7 @@ import { EditUserDto, GetProfileDto, GetUserNamesDto, SearchUserDto } from '@dto
 import AppDependencies from 'appDependencies';
 import { Profile } from '@entities';
 import { NotFoundException } from '@exceptions';
-import { friendService, pointService, userService } from '@services';
+import { friendService, photoService, pointService, userService } from '@services';
 
 export class UserController {
     public constructor(dependencies: AppDependencies) {
@@ -39,6 +39,10 @@ export class UserController {
     ): Promise<Profile> {
         const userId = Number(res.locals.userId);
         const newUserData = req.body;
+        if (newUserData.photoId) {
+            const level = await pointService.getUserLevel(userId);
+            await photoService.failIfPhotoIsNotAvailable(newUserData.photoId, level.levelNumber);
+        }
         const userProfile = await userService.update(userId, newUserData);
         return userProfile;
     }
@@ -49,5 +53,11 @@ export class UserController {
         const query = (req.query.userIds as string).split(',');
         const userIds = query.map((userId) => Number(userId));
         return await userService.getUserNames(userIds);
+    }
+
+    public async getPhotos(req: Request<any>, res: Response<any>): Promise<any> {
+        const userId = Number(res.locals.userId);
+        const level = await pointService.getUserLevel(userId)
+        return await photoService.getPhotos(level.levelNumber)
     }
 }

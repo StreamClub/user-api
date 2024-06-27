@@ -6,3 +6,4 @@ export * from './friendRequests';
 export * from './friends';
 export * from './points';
 export * from './levels';
+export * from './photos'

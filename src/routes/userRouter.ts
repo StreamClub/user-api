@@ -35,6 +35,15 @@ export function UserRouter(dependencies: AppDependencies) {
         )
     )
 
+    router.get(
+        "/photos",
+        loadUserContext,
+        handleRequest(
+            (req, res) => userController.getPhotos(req, res),
+            StatusCodes.OK
+        )
+    )
+
 
     router.get(
         "/:userId",
