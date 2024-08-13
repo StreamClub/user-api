@@ -23,6 +23,13 @@ class FriendService {
         return friendships;
     }
 
+    public async getAllFriends(userId: number): Promise<any> {
+        const friendships = await friendRepository.findAllFriendsOf(userId);
+        const friendsIds: number[] = friendships.map(friend =>
+            friend.userId1 == userId ? friend.userId2 : friend.userId1);
+        return { friends: friendsIds };
+    }
+
     public async deleteFriend(userId: number, friendId: number): Promise<void> {
         const friend = await friendRepository.findOneWith(userId, friendId);
         if (!friend) {
