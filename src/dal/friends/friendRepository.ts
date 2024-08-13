@@ -21,6 +21,18 @@ class FriendRepository {
         return new Page(pageNumber, pageSize, count, friends);
     }
 
+    public async findAllFriendsOf(userId: number): Promise<Friend[]> {
+        const friends = await FriendModel.findAll({
+            where: {
+                [Op.or]: [
+                    { userId1: userId },
+                    { userId2: userId }
+                ]
+            }
+        });
+        return friends.map(friend => new Friend(friend));
+    }
+
     public async save(userId1: number, userId2: number): Promise<Friend> {
         try {
             const created = await FriendModel.create({ userId1, userId2 });

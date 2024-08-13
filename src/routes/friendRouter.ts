@@ -29,6 +29,15 @@ export function FriendRouter(dependencies: AppDependencies) {
         )
     )
 
+    router.get(
+        "/all",
+        loadUserContext,
+        handleRequest(
+            (req, res) => friendController.getAllFriends(req, res),
+            StatusCodes.OK
+        )
+    )
+
     router.delete(
         "/:userId",
         loadUserContext,

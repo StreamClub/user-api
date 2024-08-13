@@ -16,6 +16,11 @@ export class FriendController {
         return await friendService.getFriendList(userId, pageNumber, pageSize);
     }
 
+    public async getAllFriends(req: Request, res: Response<any>): Promise<Page> {
+        const userId = Number(res.locals.userId);
+        return await friendService.getAllFriends(userId);
+    }
+
     public async sendFriendRequest(
         req: Request<GetProfileDto>, res: Response<any>,
     ): Promise<FriendRequest> {
