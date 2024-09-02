@@ -12,7 +12,7 @@ class GroupRepository {
                 }
             }
         });
-        return groups.map(group => new Group(group));
+        return { groups: groups.map(group => new Group(group)) };
     }
 
     public async createGroup(members: number[], name: string): Promise<Group> {
@@ -21,6 +21,17 @@ class GroupRepository {
             members
         });
         return new Group(created);
+    }
+
+    public async deleteGroup(userId: number, groupId: number): Promise<void> {
+        await GroupModel.destroy({
+            where: {
+                id: groupId,
+                members: {
+                    [Op.contains]: [userId]
+                }
+            }
+        });
     }
 
 }

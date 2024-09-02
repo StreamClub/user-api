@@ -33,7 +33,14 @@ export function GroupRouter(dependencies: AppDependencies) {
         )
     );
 
-
+    router.delete(
+        "/:id",
+        loadUserContext,
+        handleRequest(
+            (req, res) => groupController.deleteGroup(req, res),
+            StatusCodes.OK
+        )
+    );
 
     return router;
 }

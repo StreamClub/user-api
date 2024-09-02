@@ -12,6 +12,10 @@ class GroupService {
         return await groupRepository.createGroup(members, name);
     }
 
+    public async deleteGroup(userId: number, groupId: number): Promise<void> {
+        return await groupRepository.deleteGroup(userId, groupId);
+    }
+
 }
 
 export const groupService = new GroupService();

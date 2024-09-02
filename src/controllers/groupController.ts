@@ -20,4 +20,10 @@ export class GroupController {
         return await groupService.createGroup(allMembers, name);
     }
 
+    public async deleteGroup(req: Request, res: Response<any>): Promise<void> {
+        const userId = Number(res.locals.userId);
+        const groupId = Number(req.params.id);
+        return await groupService.deleteGroup(userId, groupId);
+    }
+
 }
