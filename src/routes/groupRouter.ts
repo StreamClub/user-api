@@ -8,6 +8,7 @@ import { Router } from "express";
 import { StatusCodes } from "http-status-codes";
 import AppDependencies from "appDependencies";
 import { GroupController } from "@controllers";
+import { CreateGroupSchema } from "@dtos";
 
 export function GroupRouter(dependencies: AppDependencies) {
     const router = Router();
@@ -20,7 +21,19 @@ export function GroupRouter(dependencies: AppDependencies) {
             (req, res) => groupController.getUserGroups(req, res),
             StatusCodes.OK
         )
-    )
+    );
+
+    router.post(
+        "/",
+        loadUserContext,
+        validateSchema(CreateGroupSchema, [FieldOptions.body]),
+        handleRequest(
+            (req, res) => groupController.createGroup(req, res),
+            StatusCodes.CREATED
+        )
+    );
+
+
 
     return router;
 }

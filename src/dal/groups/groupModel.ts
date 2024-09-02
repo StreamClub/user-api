@@ -1,4 +1,3 @@
-import { UserModel } from "@dal";
 import { DataTypes, Model, Sequelize } from "sequelize";
 
 class GroupModel extends Model {
@@ -21,8 +20,6 @@ export function initGroupModel(dbConnection: Sequelize) {
         sequelize: dbConnection,
         modelName: "Group"
     });
-    GroupModel.belongsToMany(UserModel, { through: 'GroupMembers' });
-    UserModel.belongsToMany(GroupModel, { through: 'GroupMembers' });
     GroupModel.sync();
 }
 
