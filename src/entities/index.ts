@@ -9,3 +9,4 @@ export * from './friend';
 export * from './friendship';
 export * from './friendRequestInfo';
 export * from './group';
+export * from './groupDetail';

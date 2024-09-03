@@ -8,7 +8,7 @@ import { Router } from "express";
 import { StatusCodes } from "http-status-codes";
 import AppDependencies from "appDependencies";
 import { GroupController } from "@controllers";
-import { CreateGroupSchema } from "@dtos";
+import { CreateGroupSchema, GetAllGroupsSchema } from "@dtos";
 
 export function GroupRouter(dependencies: AppDependencies) {
     const router = Router();
@@ -30,6 +30,24 @@ export function GroupRouter(dependencies: AppDependencies) {
         handleRequest(
             (req, res) => groupController.createGroup(req, res),
             StatusCodes.CREATED
+        )
+    );
+
+    router.get(
+        "/all",
+        validateSchema(GetAllGroupsSchema, [FieldOptions.query]),
+        handleRequest(
+            (req, res) => groupController.getAllGroups(req, res),
+            StatusCodes.OK
+        )
+    )
+
+    router.get(
+        "/:id",
+        loadUserContext,
+        handleRequest(
+            (req, res) => groupController.getGroup(req, res),
+            StatusCodes.OK
         )
     );
 
