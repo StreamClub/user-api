@@ -1,5 +1,5 @@
 import {
-    initFriendModel, initFriendRequestModel, initLevelModel, initPhotoModel, initPointModel, initTokenModel,
+    initFriendModel, initFriendRequestModel, initGroupModel, initLevelModel, initPhotoModel, initPointModel, initTokenModel,
     initUserModel, initVerificationCodeModel,
     levelRepository,
     photoRepository
@@ -23,6 +23,7 @@ export class Db {
                 initPointModel(this.dbConnection);
                 initLevelModel(this.dbConnection);
                 initPhotoModel(this.dbConnection);
+                initGroupModel(this.dbConnection);
                 await this.dbConnection.sync();
                 await levelRepository.initLevels();
                 await photoRepository.initPhotos();
