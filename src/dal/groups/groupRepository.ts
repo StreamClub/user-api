@@ -39,7 +39,11 @@ class GroupRepository {
     }
 
     public async getAllGroups(pageNumber: number, pageSize: number): Promise<Page> {
-        const { rows, count } = await GroupModel.findAndCountAll();
+        const { rows, count } = await GroupModel.findAndCountAll({
+            offset: (pageNumber - 1) * pageSize,
+            limit: pageSize,
+        });
+
         const groups = rows.map(group => new Group(group));
         return new Page(pageNumber, pageSize, count, groups);
     }
