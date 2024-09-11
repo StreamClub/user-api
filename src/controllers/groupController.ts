@@ -30,7 +30,7 @@ export class GroupController {
 
     public async getAllGroups(req: Request, res: Response<any>): Promise<Page> {
         const pageSize = Number(req.query.pageSize) || 20;
-        const pageNumber = Number(req.query.page) || 1;
+        const pageNumber = Number(req.query.pageNumber) || 1;
         return await groupService.getAllGroups(pageNumber, pageSize);
     }
 
