@@ -44,6 +44,7 @@ class UserService {
         return users.map((user) => {
             return {
                 id: user.id,
+                photoId: user.photoId,
                 userName: user.userName,
             };
         });
