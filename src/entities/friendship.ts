@@ -6,6 +6,7 @@ export class Friendship {
     userName: string;
     displayName: string;
     userId: string;
+    photoId: number;
 
     constructor(friendshipId: number, user: User) {
         this.id = friendshipId;
@@ -13,5 +14,6 @@ export class Friendship {
         this.userName = user.userName;
         this.displayName = user.displayName;
         this.userId = user.id;
+        this.photoId = user.photoId
     }
 }
