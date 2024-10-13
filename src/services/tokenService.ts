@@ -25,7 +25,7 @@ class TokenService {
             throw new UnauthorizedException('El token de refresco no existe');
         }
         if (storedRefreshToken.refreshToken !== receivedRefreshToken) {
-            throw new UnauthorizedException('El token de refresco no pertenece con ninguno usuario');
+            throw new UnauthorizedException('El token de refresco no pertenece a ninguno usuario');
         }
         return await this.generateTokens(user.email, refreshTokenData.userId);
     }
