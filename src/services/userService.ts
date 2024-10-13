@@ -45,7 +45,7 @@ class UserService {
             return {
                 id: user.id,
                 photoId: user.photoId,
-                userName: user.userName,
+                userName: user.displayName,
             };
         });
     }
