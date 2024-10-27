@@ -1,7 +1,5 @@
 # user-api
 
-[![codecov](https://codecov.io/gh/StreamClub/user-api/graph/badge.svg?token=VSM0K25UPK)](https://codecov.io/gh/StreamClub/user-api)
-
 Para correr ejecutar:
 
 ```
